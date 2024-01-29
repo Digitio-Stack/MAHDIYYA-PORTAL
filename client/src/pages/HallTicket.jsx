@@ -107,7 +107,7 @@ function HallTicket() {
                   </div>
                 </div>
                 <h5 className="text-center border-b p-2 border-gray-800">
-                  CMS, MAHDIYYA ODD SEMESTER EXAMINATION, OCT 2023
+                  CMS, MAHDIYYA EVEN SEMESTER EXAMINATION, FEB 2024
                 </h5>
                 <div className="border-t mt-1 border-gray-800 p-3">
                   <h5 className="font-semibold text-center">HALL TICKET</h5>
