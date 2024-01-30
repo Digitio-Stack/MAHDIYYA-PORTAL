@@ -43,22 +43,22 @@ function Homepage() {
         {/*  */}
         {/* component */}
         <a
-          href="https://shefest.cpetdhiu.in/"
+          href="/hall-ticket"
           target="_blank"
           className="flex justify-center  items-center mx-4 bg-gray-100"
         >
-          <div className=" bg-yellow-100 max-w-2xl flex-wrap items-center justify-center  p-3 rounded-xl flex w-full my-5 ">
-            <img src="/images/shefest-logo.svg" alt="" className="w-72" />
+          <div className=" bg-yellow-100 gap-7 max-w-2xl flex-wrap items-center justify-center  p-3 rounded-xl flex w-full my-5 ">
+            <img src="/dl.webp" alt="" className="h-20 object-contain" />
             <div className=" p-4  rounded-xl">
               <p className="w-full text-2xl font-semibold text-black">
-                SheFest 2023-24 Arts Fest
+                Download Halltickets (Feb 2024)
               </p>
               <p className="w-full text-sm pb-4 font-semibold text-gray-500">
-               Results Published
+               Mahdiyya/CMS Even Semester Halltickets are available now
               </p>
               <div className="lg:flex justify-between items-center">
                 <p className="text-white animate-pulse hover:bg-yellow-600 bg-yellow-500 rounded-full px-3 py-1 font-semibold cursor-pointer transition border border-white  hover:bg-transparent ">
-                  Check Now
+                  Download Now
                 </p>
               </div>
             </div>
