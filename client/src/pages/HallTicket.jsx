@@ -13,13 +13,13 @@ function HallTicket() {
   const hallTicketRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => hallTicketRef.current,
+    documentTitle: "Hall Ticket",
   });
 
   const downloadHallTicket = async (e) => {
     e.preventDefault();
     try {
       let res = await Axios.post("/hall-ticket/download", { registerNo });
-      console.log(res.data);
       setData(res.data);
       setError(null); // Clear any previous errors
     } catch (error) {
@@ -75,19 +75,16 @@ function HallTicket() {
         </div>
       )}
       {data && (
-        <div>
+        <div style={{ width: "210mm", height: "297mm", padding: "20px" }}>
           <section
             ref={hallTicketRef}
-            style={{ border: "2px", borderColor: "#000", marginBottom: 100 }}
+            style={{
+              border: "1px solid #000",
+              marginBottom: "10px",
+              marginTop: "30px",
+            }}
           >
-            <div
-              style={{
-                width: 650,
-                height: 900,
-                marginRight: 10,
-                marginTop: 10,
-              }}
-            >
+            <div style={{ width: "100%", height: "100%" }}>
               <div className="border border-gray-900">
                 <div className=" border-b-2 border-gray-800 p-2 ">
                   <div className="flex flex-wrap ">
