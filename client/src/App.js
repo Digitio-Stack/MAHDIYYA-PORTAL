@@ -32,6 +32,7 @@ import About from "./pages/About";
 import CenterRegister from "./pages/CenterRegister";
 import AdmissionStarted from "./pages/AdmissionStarted";
 import Notifications from "./pages/Notifications";
+import InstitutionDuty from "./pages/Duty";
 
 export default function App() {
   ReactGA.initialize("G-CELLQQWRXC");
@@ -65,6 +66,7 @@ export default function App() {
               <Route path="/admission-created" element={<AdmissionCreated />} />
               <Route path="/course-details/:id" element={<CourseDetails />} />
               <Route path="/all-courses" element={<AllCourses />} />
+              <Route path="/institution-duty" element={<InstitutionDuty />} />
               <Route path="/email-sent/:email" element={<EmailSent />} />
               <Route path="/mahdiyya-third-year" element={<FileDataPage />} />
               <Route path="/branch/:id" element={<ViewBranch />} />

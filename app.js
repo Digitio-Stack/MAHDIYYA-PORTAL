@@ -7,7 +7,7 @@ const authRoutes = require("./routes/auth");
 const studentRoutes = require("./routes/student");
 const branchRoutes = require("./routes/branch");
 const teacherRoutes = require("./routes/teacher");
-// const paymentRoutes = require("./routes/payment");
+const dutyRoutes = require("./routes/duty");
 const notificationRoutes = require("./routes/notification");
 const subjectRoutes = require("./routes/subject");
 const transferRoutes = require("./routes/transfer");
@@ -28,7 +28,6 @@ const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const compression = require("compression");
-
 
 dotenv.config();
 app.use(
@@ -52,20 +51,19 @@ app.use(mongoSanitize());
 //data sanitization against xss
 app.use(xss()); //prevent from inserting HTML or others to DB
 app.use(compression()); //works on texts
-app.use(bodyParser.json({limit:"50mb",}));
-app.use(express.json({limit:"50mb"}));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(express.json({ limit: "50mb" }));
 // app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended: false,limit:"50mb" }));
+app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.static("uploads"));
-
 
 app.use("/api/auth", authRoutes);
 app.use("/api/student", studentRoutes);
 app.use("/api/branch", branchRoutes);
 app.use("/api/teacher", teacherRoutes);
-// app.use("/api/payment", paymentRoutes);
+app.use("/api/duty", dutyRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/api/subject", subjectRoutes);
 app.use("/api/transfer", transferRoutes);
