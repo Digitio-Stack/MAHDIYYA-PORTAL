@@ -51,7 +51,7 @@ function About() {
             </div>
           </div>
           <iframe
-            src="/images/CPET BYLAW 2023-24.pdf"
+            src="/images/CPET BYLAW 2024-25.pdf"
             width="100%"
             height="500px"
           ></iframe>
