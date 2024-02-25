@@ -43,22 +43,21 @@ function Homepage() {
         {/*  */}
         {/* component */}
         <a
-          href="/hall-ticket"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfb_S31WKWCzDglCQokIOkyfrUSWSmqCjlaPuyMxfE8g_CXOg/viewform"
           target="_blank"
           className="flex justify-center  items-center mx-4 bg-gray-100"
         >
-          <div className=" bg-yellow-100 gap-7 max-w-2xl flex-wrap items-center justify-center  p-3 rounded-xl flex w-full my-5 ">
-            <img src="/dl.webp" alt="" className="h-20 object-contain" />
+          <div className=" bg-[#275e68] gap-7 max-w-2xl flex-wrap items-center justify-center  p-3 rounded-xl flex w-full my-5 ">
             <div className=" p-4  rounded-xl">
-              <p className="w-full text-2xl font-semibold text-black">
-                Download Halltickets (Feb 2024)
+              <p className="w-full text-2xl font-semibold uppercase text-white">
+                registration started
               </p>
-              <p className="w-full text-sm pb-4 font-semibold text-gray-500">
-               Mahdiyya/CMS Even Semester Halltickets are available now
+              <p className="w-full text-sm pb-4 font-semibold text-gray-100">
+                MAHDIYYA study centre registration started
               </p>
               <div className="lg:flex justify-between items-center">
-                <p className="text-white animate-pulse hover:bg-yellow-600 bg-yellow-500 rounded-full px-3 py-1 font-semibold cursor-pointer transition border border-white  hover:bg-transparent ">
-                  Download Now
+                <p className="text-white text-center w-full animate-pulse hover:bg-[#48909c] bg-[#31626b] rounded-full px-3 py-1 font-semibold cursor-pointer transition border border-white  hover:bg-transparent ">
+                  Register Now
                 </p>
               </div>
             </div>
