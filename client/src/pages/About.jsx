@@ -30,7 +30,7 @@ function About() {
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6 mb-2">
                   <a
-                    href="/images/CPET MAHDIYYA BYLAW, 2022-23_compressed (1).pdf"
+                    href="/images/CPET BYLAW 2024-25..pdf"
                     download
                     target={"_blank"}
                     className="rounded-md bg-[#094b5e] px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
