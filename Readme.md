@@ -33,17 +33,6 @@ To run this project, you will need to add the following environment variables to
 ```
 
 
-`you can test account using this credentials`
-
-  email (admin) : user01
-  password : 1234
-
-  email (super admin) : superadmin
-  password : 1234
-
-
-
-
 # screenshots
 
 ![Alt text](./screenshots/1.png)
