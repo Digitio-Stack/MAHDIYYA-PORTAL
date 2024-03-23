@@ -18,7 +18,7 @@ function AdmissionCreated() {
             ></path>
           </svg>
           <div className="text-center">
-            <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
+            <h3 className="md:text-2xl text-base text-blue-900 font-semibold text-center">
               Your Admission Created Successfully
             </h3>
             <p className="text-gray-600 my-2">

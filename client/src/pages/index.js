@@ -1,26 +1,25 @@
-import AddStudents from "../components/New Admission/AddStudents";
 import ProtectedRoutes from "../ProtectRoutes";
 import Restricted from "../Restricted";
-import AllClasses from "./admin/AllClasses";
-import AllTeachers from "./admin/AllTeachers";
-import BranchTranfers from "./admin/BranchTranfers";
-import CreateTeacher from "./admin/CreateTeacher";
-import EditStudent from "./admin/EditStudent";
-import EditTeacher from "./admin/EditTeacher";
+import AddStudents from "../components/New Admission/NewAdmission.jsx";
 import Login from "./Login";
 import NotAllowed from "./NotAllowed";
 import NotLoggedIn from "./NotLoggedIn";
 import NotFound from "./Not_found";
-import Profile from "./StudentProfile";
-import AllBranchCard from "./superAdmin/AllBranchCard";
+import AllClasses from "./admin/class/AllClasses";
+import AddStudent from "./admin/student/AddStudent.jsx";
+import EditStudent from "./admin/student/EditStudent.jsx";
+import AllTeachers from "./admin/teacher/AllTeachers.jsx";
+import CreateTeacher from "./admin/teacher/CreateTeacher.jsx";
+import EditTeacher from "./admin/teacher/EditTeacher.jsx";
+import Profile from "./student/StudentProfile.jsx";
+import MahdiyyaStudents from "./superAdmin/MahdiyyaStudents.jsx";
 import AllBranches from "./superAdmin/AllBranches";
-import AllStudents from "./superAdmin/AllStudents";
 import AllUsers from "./superAdmin/AllUsers";
 import BranchBasedDetails from "./superAdmin/BranchBasedDetails";
 import BranchBasedTeachers from "./superAdmin/BranchBasedTeachers";
+import ClassBasedStudents from "./superAdmin/ClassBasedStudents.jsx";
 import CreateBranch from "./superAdmin/CreateBranch";
 import EditBranch from "./superAdmin/EditBranch";
-import ViewBranch from "./superAdmin/ViewBranch";
 
 export const Teacher = {
   EditTeacher,
@@ -37,20 +36,19 @@ export const Auth = {
   NotLoggedIn,
 };
 export const Student = {
-  AllStudents,
+  ClassBasedStudents,
   EditStudent,
   AddStudents,
   Profile,
   AllClasses,
+  AddStudent,
 };
 export const Branch = {
   AllBranches,
   EditBranch,
   CreateBranch,
-  AllBranchCard,
+  MahdiyyaStudents,
   BranchBasedDetails,
-  ViewBranch,
-  BranchTranfers,
 };
 export const Users = {
   AllUsers,

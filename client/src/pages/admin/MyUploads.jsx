@@ -77,13 +77,13 @@ function MyUploads() {
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th
                 scope="row"
-                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="py-4 px-6 font-medium text-blue-900 whitespace-nowrap dark:text-white"
               >
                 {key + 1}
               </th>
               <th
                 scope="row"
-                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="py-4 px-6 font-medium text-blue-900 whitespace-nowrap dark:text-white"
               >
                 {upload?.referenceId?.title}
               </th>
@@ -137,13 +137,13 @@ function MyUploads() {
               >
                 <th
                   scope="row"
-                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="py-4 px-6 font-medium text-blue-900 whitespace-nowrap dark:text-white"
                 >
                   {key + 1}
                 </th>
                 <th
                   scope="row"
-                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="py-4 px-6 font-medium text-blue-900 whitespace-nowrap dark:text-white"
                 >
                   {download.title}
                 </th>

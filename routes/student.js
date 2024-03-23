@@ -4,35 +4,35 @@ const studentController = require("../controllers/studentController");
 
 const router = require("express").Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-const uploads = multer({ storage: storage });
+const uploads = multer();
 
 router.post("/register", studentController.registerStudent);
-router.post("/login", studentController.studentLogin);
+router.post("/add", studentController.addStudent);
 
-router.post("/:branchId/:classId", studentController.getAllStudents);
 router.post("/", studentController.getAdmissions);
-router.post("/admission-requests", studentController.getAdmissionRequests);
-router.post(
-  "/my-students",
+router.get(
+  "/my-students/data/:classId",
   protect,
   restrictTo("admin"),
   studentController.getMyStudents
 );
-router.get("/details/:id", studentController.getBranchDetails);
-router.post("/all-details/", studentController.getAllDetails);
-router.post(
-  "/update-admission/",
+router.get(
+  "/my-admissions/data",
+  protect,
+  restrictTo("admin"),
+  studentController.getMyAdmissions
+);
+router.get(
+  "/",
   protect,
   restrictTo("superAdmin"),
-  studentController.updateAdmissionNumber
+  studentController.getAllStudents
+);
+router.get(
+  "/admissions/data",
+  protect,
+  restrictTo("superAdmin"),
+  studentController.getAllAdmissionRequests
 );
 
 router.get("/:id", studentController.getStudent);
@@ -48,12 +48,7 @@ router.patch(
   restrictTo("admin"),
   studentController.updateStudent
 );
-router.post(
-  "/admission/verify/:id",
-  protect,
-  restrictTo("admin"),
-  studentController.verifyStudent
-);
+
 router.post(
   "/excel",
   protect,

@@ -54,17 +54,8 @@ const studentSchema = new mongoose.Schema(
       uppercase: true,
       maxLength: [50, "50 characters are allowed"],
     },
-    dobDate: {
-      type: String,
-      required: [true, "DOB Date is required"],
-      maxLength: [15, "15 characters are allowed"],
-    },
-    dobMonth: {
-      type: String,
-      required: [true, "DOB Month is required"],
-      maxLength: [15, "15 characters are allowed"],
-    },
-    dobYear: {
+
+    dateOfBirth: {
       type: String,
       required: [true, "DOB year is required"],
       maxLength: [15, "15 characters are allowed"],
@@ -79,24 +70,15 @@ const studentSchema = new mongoose.Schema(
       maxLength: [100, "100 characters are allowed"],
       ref: "Branch",
     },
-    branchCode: {
-      type: String,
-      // required: [true, "Please select a branch"],
-      // maxLength: [100, "100 characters are allowed"],
-      // ref: "Branch",
-    },
-    className: {
-      type: String,
-      // required: [true, "Please select a branch"],
-      // maxLength: [100, "100 characters are allowed"],
-      // ref: "Branch",
+    verified: {
+      type: Boolean,
+      default:false
     },
     class: {
       type: mongoose.Types.ObjectId,
       required: [true, "Please select a class"],
       ref: "Class",
     },
- 
   },
   { timestamps: true }
 );

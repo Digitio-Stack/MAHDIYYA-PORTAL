@@ -18,31 +18,50 @@ function MyMessages() {
     getMessages();
   }, []);
   return (
-    <table class="table-auto w-full lg:w-1/2 mx-auto mt-4 text-center bg-white shadow-md rounded-lg">
-      <thead class="bg-gray-300">
-        <tr>
-          <th class="px-4 py-2">title</th>
-          <th class="px-4 py-2">link</th>
-        </tr>
-      </thead>
-      <tbody>
-        {messages.length > 0 &&
-          messages.map((message) => (
-            <tr key={message._id}>
-              <td class="px-4 py-2 uppercase">{message.title}</td>
-              <td class="px-4 py-2">
-                <a
-                  href={message.link}
-                  target={"_blank"}
-                  className="text-blue-500"
-                >
-                  view
-                </a>
-              </td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
+    <>
+      <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+              <table class="min-w-full text-left text-sm font-light text-surface dark:text-white">
+                <thead class="border-b border-neutral-200 font-medium dark:border-white/10">
+                  <tr>
+                    <th scope="col" class="px-6 py-4">
+                      #
+                    </th>
+                    <th scope="col" class="px-6 py-4">
+                      title
+                    </th>
+                    <th scope="col" class="px-6 py-4">
+                      Link
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {messages.length > 0 &&
+                    messages.map((message, key) => (
+                      <tr
+                        key={key}
+                        class="border-b border-neutral-200 dark:border-white/10"
+                      >
+                        <td class="whitespace-nowrap px-6 py-4 font-medium">
+                          {key + 1}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                          {message.title}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                          <a href={message.link} target="_blank" className="text-blue-600">{message.link}</a>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

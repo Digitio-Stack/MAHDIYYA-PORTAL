@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Axios from "../../Axios";
 import { DISTRICT } from "../../Consts";
-import { UserAuthContext } from "../../context/user";
 
 function EditBranch() {
   const initialState = {
@@ -20,12 +19,12 @@ function EditBranch() {
 
   const [inputData, setInputData] = useState(initialState);
   const [loading, setLoading] = useState(false);
-  const { authData } = useContext(UserAuthContext);
   const navigate = useNavigate();
   const { id } = useParams();
 
   const getBranch = async () => {
     let { data } = await Axios.get("/branch/" + id);
+    console.log(data);
     setInputData(data);
   };
 
@@ -75,7 +74,7 @@ function EditBranch() {
                   className="block  text-sm font-bold mb-2"
                   htmlFor="username"
                 >
-                  Branch Name
+                  Centre Name
                 </label>
                 <input
                   className="focus:ring-indigo-500 focus:border-indigo-500 shadow appearance-none border rounded w-full py-4 px-3  leading-tight focus:outline-none focus:shadow-outline uppercase"
@@ -142,7 +141,7 @@ function EditBranch() {
                 onChange={(e) => onChange(e)}
                 id=""
                 value={inputData.district}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                className="bg-gray-50 border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               >
                 <option hidden>Select YOUR DISTRICT </option>
                 {DISTRICT.map((district, index) => (

@@ -1,5 +1,3 @@
-import { faClock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -56,7 +54,7 @@ function CreateSchedule() {
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
+                      className="text-lg leading-6 font-medium text-blue-900"
                       id="modal-title"
                     >
                       Create New Schedule
@@ -107,7 +105,7 @@ function CreateSchedule() {
                           value={formData.type}
                           name="type"
                           onChange={(e) => handleChange(e)}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-4 "
+                          className="bg-gray-50 border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-4 "
                         >
                           <option hidden>select type </option>
                           <option value={"students"}>students</option>

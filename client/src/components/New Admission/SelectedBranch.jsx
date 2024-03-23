@@ -108,7 +108,7 @@ function SelectedBranch({
               name="branch"
               onChange={(e) => setSelectedBranch(e.target.value)}
               id=""
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              className="bg-gray-50 border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             >
               <option hidden>Select </option>
               {DISTRICT.map((district, index) => (
@@ -251,7 +251,7 @@ function SelectedBranch({
           <div className="flex">
             <button
               onClick={prevPage}
-              className="w-1/2 mt-3 lg:mt-7 bg-gray-900 mx-2 hover:bg-gray-800 text-white font-bold py-4 px-4 rounded focus:outline-none focus:shadow-outline uppercase"
+              className="w-1/2 mt-3 lg:mt-7 bg-blue-900 mx-2 hover:bg-gray-800 text-white font-bold py-4 px-4 rounded focus:outline-none focus:shadow-outline uppercase"
             >
               GO BACK
             </button>

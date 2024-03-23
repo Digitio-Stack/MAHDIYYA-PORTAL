@@ -1,32 +1,64 @@
 const Student = require("../models/studentModel");
 const globalFunctions = require("../utils/globalFuctions");
 const mongoose = require("mongoose");
-const Branch = require("../models/branchModel");
-const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/AppError");
-const jwt = require("jsonwebtoken");
-const excelToJson = require("convert-excel-to-json");
-const fs = require("fs");
+const xlsx = require("xlsx");
 
 exports.getStudent = globalFunctions.getOne(Student, "branch", "class");
-exports.deleteStudent = async (req, res, next) => {
-  try {
-    await Student.findByIdAndDelete(req.params.id);
-    res.status(200).json({ deleted: true });
-  } catch (error) {
-    next(error);
-  }
-};
 
 exports.getAllStudents = async (req, res, next) => {
   try {
-    let data = await Student.find({
-      branch: req.params.branchId,
-      class: req.params.classId,
-    })
-      .populate("class")
-      .populate("branch");
-    res.status(200).json(data);
+    let query = req.query;
+
+    if (query.class && query.branch) {
+      const data = await Student.aggregate([
+        {
+          $match: {
+            branch: mongoose.Types.ObjectId(query.branch),
+            verified: true,
+            class: mongoose.Types.ObjectId(query.class),
+          },
+        },
+      ]);
+      return res.status(200).json(data);
+    } else {
+      const populatedStudents = await Student.find()
+        .populate("branch")
+        .populate("class");
+
+      const branchStudentCounts = populatedStudents.reduce(
+        (counts, student) => {
+          const { branch, class: studentClass } = student;
+          if (!branch || !studentClass) return counts; // Skip if branch or class is missing
+
+          const { _id: branchId, branchName, branchCode } = branch;
+          const { _id: classId, className } = studentClass;
+
+          let existingBranch = counts.find(
+            (item) =>
+              item.branchId === branchId && item.branchCode === branchCode
+          );
+          if (!existingBranch) {
+            existingBranch = { branchId, branchName, branchCode, classes: [] };
+            counts.push(existingBranch);
+          }
+
+          let existingClass = existingBranch.classes.find(
+            (item) => item.classId === classId
+          );
+          if (!existingClass) {
+            existingClass = { classId, className, studentCount: 0 };
+            existingBranch.classes.push(existingClass);
+          }
+
+          existingClass.studentCount++;
+
+          return counts;
+        },
+        []
+      );
+
+      res.json(branchStudentCounts);
+    }
   } catch (error) {
     console.log(error);
     next(error);
@@ -42,45 +74,9 @@ exports.registerStudent = async (req, res, next) => {
     next(error);
   }
 };
-exports.studentLogin = catchAsync(async (req, res, next) => {
-  let { registerNo, password } = req.body;
-  if (!registerNo || !password) {
-    next(new AppError("Please enter your register number and password", 400));
-  } else {
-    let user = await Student.findOne({ registerNo });
-    if (!user) {
-      next(new AppError("No user found in this register number", 404));
-    } else {
-      let match = password === user.password;
-      if (!match) {
-        next(new AppError("incorrect password", 401));
-      } else {
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-          expiresIn: "90d",
-        });
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        res
-          .cookie("jwt", token, {
-            httpOnly: true,
-            // max age 30 days
-            maxAge: decoded.exp,
-          })
-          .status(200);
-        // remove password from user object
-        user.password = undefined;
-        res.status(200).json(user);
-      }
-    }
-  }
-});
-exports.updateStudent = globalFunctions.updateOne(Student);
-
-exports.verifyStudent = async (req, res, next) => {
+exports.addStudent = async (req, res, next) => {
   try {
-    let branch = await Branch.findById(req.user.branch);
-    let data = await Student.findByIdAndUpdate(req.params.id, {
-      verified: true,
-    });
+    let data = await Student.create({ ...req.body, verified: true });
     res.status(200).json(data);
   } catch (error) {
     console.log(error);
@@ -88,9 +84,49 @@ exports.verifyStudent = async (req, res, next) => {
   }
 };
 
+exports.updateStudent = globalFunctions.updateOne(Student);
+
 exports.getMyStudents = async (req, res, next) => {
   try {
-    let data = await Student.find({ branch: req.user.branch })
+    let data = await Student.aggregate([
+      {
+        $match: {
+          branch: req.user.branch,
+          verified: true,
+          class: mongoose.Types.ObjectId(req.params.classId),
+        },
+      },
+      {
+        $lookup: {
+          from: "classes", // Change "classes" to the actual name of your Class collection
+          localField: "class",
+          foreignField: "_id",
+          as: "class",
+        },
+      },
+      {
+        $sort: { createdAt: 1 },
+      },
+    ]);
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+exports.getMyAdmissions = async (req, res, next) => {
+  try {
+    let data = await Student.find({ branch: req.user.branch, verified: false })
+      .populate("class", "className")
+      .sort({ createdAt: 1 });
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+exports.getAllAdmissionRequests = async (req, res, next) => {
+  try {
+    let data = await Student.find({ verified: false })
+      .populate("branch", "branchName")
       .populate("class", "className")
       .sort({ createdAt: 1 });
     res.status(200).json(data);
@@ -99,90 +135,6 @@ exports.getMyStudents = async (req, res, next) => {
   }
 };
 
-exports.getBranchDetails = async (req, res) => {
-  try {
-    let data = await Student.aggregate([
-      {
-        $match: { branch: mongoose.Types.ObjectId(req.params.id) },
-      },
-      {
-        $group: {
-          _id: "$class",
-          numStudents: { $sum: 1 },
-          verified: { $sum: "$verified" },
-        },
-      },
-    ]);
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
-exports.getAllDetails = async (req, res) => {
-  try {
-    let data;
-    if (req.query.branch) {
-      data = await Student.aggregate([
-        {
-          $group: {
-            _id: "$branch",
-            numStudents: { $sum: 1 },
-          },
-        },
-        {
-          $lookup: {
-            from: "branches",
-            localField: "_id",
-            foreignField: "_id",
-            as: "branch",
-          },
-        },
-        {
-          $project: {
-            "branch.branchName": 1,
-            numStudents: 1,
-            "branch.branchCode": 1,
-            "branch.place": 1,
-            "branch.district": 1,
-          },
-        },
-      ]);
-    } else {
-      data = await Student.aggregate([
-        {
-          $match: { verified: true },
-        },
-        {
-          $group: {
-            _id: "$class",
-            numStudents: { $sum: 1 },
-          },
-        },
-      ]);
-    }
-
-    res.status(200).json(data);
-  } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
-  }
-};
-
-exports.updateAdmissionNumber = catchAsync(async (req, res, next) => {
-  if (!req.body.start) {
-    res.status(400).json({ error: "please add a starting number" });
-  } else {
-    let students = await Student.find({
-      verified: true,
-    });
-
-    students.forEach((student, key) => {
-      students[key].admissionNo = "CMS" + (parseInt(req.body.start) + key);
-      student.save();
-    });
-    res.status(200).json(students);
-  }
-});
 exports.getAdmissionRequests = async (req, res, next) => {
   try {
     let data = await Student.aggregate([
@@ -208,59 +160,39 @@ exports.getAdmissionRequests = async (req, res, next) => {
     next(error);
   }
 };
-
-exports.excelUpload = async (req, res) => {
+exports.deleteStudent = async (req, res, next) => {
   try {
-    importExcelData2MongoDB("./uploads/" + req.file.filename, req, res);
-  } catch (err) {
-    res.status(500).json({
-      message: "Error registering student",
-      error: err,
-    });
+    await Student.findByIdAndDelete(req.params.id);
+    res.status(200).json({ deleted: true });
+  } catch (error) {
+    next(error);
   }
 };
+exports.excelUpload = async (req, res) => {
+  try {
+    // Read uploaded file
+    const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const jsonData = xlsx.utils.sheet_to_json(sheet);
+    if (jsonData.length === 0) {
+      res.status(400).json({ message: "Please add data" });
+    } else {
+      await Promise.all(
+        jsonData.map(async (data) => {
+          const student = new Student({
+            ...data,
+            class: req.body.class,
+            branch: req.user.branch,
+            verified: true,
+          });
+          await student.save();
+        })
+      );
 
-async function importExcelData2MongoDB(filePath, req, res) {
-  // -> Read Excel File to Json Data
-  const excelData = excelToJson({
-    sourceFile: filePath,
-    sheets: [
-      {
-        // Excel Sheet Name
-        name: "Sheet1",
-        // Header Row -> be skipped and will not be present at our result object.
-        header: {
-          rows: 1,
-        },
-        // Mapping columns to keys
-        columnToKey: {
-          A: "studentName",
-          B: "fatherName",
-          C: "place",
-          D: "district",
-          E: "motherName",
-          F: "postOffice",
-          G: "pinCode",
-          H: "state",
-          I: "dobDate",
-          J: "dobMonth",
-          K: "dobYear",
-          L: "phone",
-          M: "houseName",
-          N: "registerNo",
-        },
-      },
-    ],
-  });
-
-  excelData.Sheet1.forEach((element) => {
-    Student.create({
-      ...element,
-      branch: req.user.branch,
-      class: req.body.class,
-      verified: true,
-    });
-  });
-  res.status(200).json({ success: true });
-  fs.unlinkSync(filePath);
-}
+      res.status(200).json({ message: "Excel data uploaded successfully" });
+    }
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

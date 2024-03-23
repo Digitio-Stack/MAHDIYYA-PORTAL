@@ -68,12 +68,14 @@ function ClassManagment() {
       <h1 className="text-center font-bold text-xl capitalize m-4">
         class management
       </h1>
-      <button
-        onClick={() => setShowModel(true)}
-        className="bg-gray-900 px-6 py-3 mr-4 my-3 float-right text-white font-bold rounded-full"
-      >
-        Add New
-      </button>
+      <div className="flex justify-center items-center">
+        <button
+          onClick={() => setShowModel(true)}
+          className="bg-blue-900 text-center uppercase  px-4 py-2 mr-4 my-3  text-white font-bold rounded-full"
+        >
+          Add New Class
+        </button>
+      </div>
       <table className="w-1/2 mx-auto leading-normal">
         <thead>
           <tr>
@@ -147,7 +149,7 @@ function CreateClass({
                 </div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <h3
-                    className="text-lg leading-6 font-medium text-gray-900"
+                    className="text-lg leading-6 font-medium text-blue-900"
                     id="modal-title"
                   >
                     Create New Class

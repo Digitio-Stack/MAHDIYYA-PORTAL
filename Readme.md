@@ -45,6 +45,3 @@ To run this project, you will need to add the following environment variables to
 ![Alt text](./screenshots/9.png)
 ![Alt text](./screenshots/10.png)
 ![Alt text](./screenshots/11.png)
-![Alt text](./screenshots/12.png)
-![Alt text](./screenshots/13.png)
-![Alt text](./screenshots/14.png)

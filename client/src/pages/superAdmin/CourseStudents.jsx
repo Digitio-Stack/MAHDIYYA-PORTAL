@@ -30,31 +30,31 @@ function CourseStudents() {
                   <tr>
                     <th
                       scope="col"
-                      className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                     >
                       #
                     </th>
                     <th
                       scope="col"
-                      className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                     >
                       Name
                     </th>
                     <th
                       scope="col"
-                      className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                     >
                       Email
                     </th>
                     <th
                       scope="col"
-                      className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                     >
                       Phone
                     </th>
                     <th
                       scope="col"
-                      className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                     >
                       Applied Time
                     </th>
@@ -63,19 +63,19 @@ function CourseStudents() {
                 <tbody>
                   {course?.learners?.map((item, index) => (
                     <tr className="border-b">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-900">
                         {index + 1}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {item?.student?.name}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {item?.student?.email}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {item?.student?.phone}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {moment(item?.time).format("DD-MMM-yyyy (HH:MM A)")}
                       </td>
                     </tr>

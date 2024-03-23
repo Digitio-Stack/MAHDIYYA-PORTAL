@@ -61,26 +61,32 @@ function AllSubjects() {
                   <tr>
                     <th
                       scope="col"
-                      className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                     >
                       #
                     </th>
                     <th
                       scope="col"
-                      className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                     >
                       SUBJECT NAME
                     </th>
                     <th
                       scope="col"
-                      className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                     >
                        SUBJECT CODE
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
+                    >
+                       TOTAL MARKS 
                     </th>
 
                     <th
                       scope="col"
-                      className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                      className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                     >
                       EDIT
                     </th>
@@ -89,17 +95,20 @@ function AllSubjects() {
                 <tbody>
                   {subjects.map((subject, index) => (
                     <tr key={index} className="border-b">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-900">
                         {index + 1}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {subject.subjectName}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {subject?.subjectCode}
                       </td>
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
+                        {subject?.totalMarks}
+                      </td>
 
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         <Link
                           to={"/edit-subject/" + subject._id}
                           className={" cursor-pointer"}

@@ -11,7 +11,11 @@ const subjectSchema = new mongoose.Schema({
     type: String,
     required: [true, "Subject Code is required"],
     maxLength: [30, "30 characters are allowed"],
-    uppercase:true
+    uppercase: true,
+  },
+  totalMarks: {
+    type: Number,
+    required: [true, "Total mark is required"],
   },
 });
 

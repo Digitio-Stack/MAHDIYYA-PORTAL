@@ -50,43 +50,43 @@ function AllBranches() {
                     <tr>
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                       >
                         #
                       </th>
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                       >
                         Study Centre
                       </th>
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                       >
                         Code
                       </th>
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                       >
                         Location
                       </th>
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                       >
                         District
                       </th>
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                       >
                         Phone
                       </th>
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium text-blue-900 px-6 py-4 text-left"
                       >
                         Edit
                       </th>
@@ -95,25 +95,25 @@ function AllBranches() {
                   <tbody>
                     {branches.map((branch, i) => (
                       <tr className="border-b">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-900">
                           {i + 1}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                           {branch.branchName}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                           {branch.branchCode}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                           {branch.place}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                           {branch.district}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                           {branch.phone}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                           <Link to={`/edit-branch/${branch._id}`}>
                             <FontAwesomeIcon icon={faEdit} />
                           </Link>

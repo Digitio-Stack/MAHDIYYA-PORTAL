@@ -42,7 +42,7 @@ function AllNotifications() {
           <>
             {notifications.map((notification, key) => (
               <div className="relative  w-full group mt-2 mx-2">
-                <div className="relative px-7 py-6 bg-white ring-1 ring-gray-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
+                <div className="relative px-7 py-6 bg-white ring-1 ring-blue-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
                 <button onClick={() => deleteNotification(notification._id)}>
                   <FontAwesomeIcon
                     icon={faTrash}

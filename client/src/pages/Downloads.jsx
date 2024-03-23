@@ -1,17 +1,4 @@
-import {
-  faArrowRight,
-  faFileImage,
-  faFilePdf,
-  faFileWord,
-  faFileExcel,
-  faFilePowerpoint,
-  faFile,
-  faFileAudio,
-  faFileVideo,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Axios from "../Axios";
 import { UserAuthContext } from "../context/user";
@@ -20,9 +7,7 @@ function Downloads() {
   const { authData } = useContext(UserAuthContext);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("student");
-  const [fileIcon, setFileIcon] = useState(null);
-  const [fileName, setFileName] = useState(null);
+  const [type, setType] = useState("");
 
   const [downloads, setDownloads] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -46,15 +31,10 @@ function Downloads() {
   };
   const handleFileChange = (file) => {
     setFile(file);
-    const fileName = file.name;
-    const fileExtension = fileName.split(".").pop();
-    const fileIcon = getFileIcon(fileExtension);
-    setFileName(fileName);
-    setFileIcon(fileIcon);
   };
   const getDownloads = async () => {
     try {
-      let { data } = await Axios.get("/downloads?type=" + type);
+      let { data } = await Axios.get("/downloads");
       setDownloads(data);
     } catch (error) {
       console.log(error.response);
@@ -65,9 +45,17 @@ function Downloads() {
   formData.append("title", title);
   formData.append("type", type);
   const fileUpload = async (e) => {
+    setLoading(true)
     e.preventDefault();
-    setLoading(true);
     try {
+      if (!title || !type || !file) {
+        toast.error("Please fill all fields", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000,
+        });
+        setLoading(false);
+      }
+
       let res = await Axios.post("/downloads", formData);
       if (res.status === 200) {
         setFile(null);
@@ -88,184 +76,127 @@ function Downloads() {
     }
   };
 
-  function getFileIcon(fileExtension) {
-    const lowercaseExtension = fileExtension.toLowerCase();
-    if (lowercaseExtension.includes("pdf")) {
-      return faFilePdf;
-    } else if (
-      lowercaseExtension.includes("doc") ||
-      lowercaseExtension.includes("docx")
-    ) {
-      return faFileWord;
-    } else if (
-      lowercaseExtension.includes("xls") ||
-      lowercaseExtension.includes("xlsx")
-    ) {
-      return faFileExcel;
-    } else if (
-      lowercaseExtension.includes("ppt") ||
-      lowercaseExtension.includes("pptx")
-    ) {
-      return faFilePowerpoint;
-    } else if (
-      lowercaseExtension.includes("jpg") ||
-      lowercaseExtension.includes("jpeg") ||
-      lowercaseExtension.includes("png") ||
-      lowercaseExtension.includes("gif")
-    ) {
-      return faFileImage;
-    } else if (
-      lowercaseExtension.includes("mp3") ||
-      lowercaseExtension.includes("wav")
-    ) {
-      return faFileAudio;
-    } else if (
-      lowercaseExtension.includes("mp4") ||
-      lowercaseExtension.includes("avi") ||
-      lowercaseExtension.includes("mov")
-    ) {
-      return faFileVideo;
-    } else if (
-      lowercaseExtension.includes("txt") ||
-      lowercaseExtension.includes("csv")
-    ) {
-      return faFile;
-    } else {
-      return faFile; // Default icon for other file types
-    }
-  }
-
   useEffect(() => {
     getDownloads();
   }, [type]);
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-3xl font-bold text-center mb-8">Downloads</h1>
-      <div className="overflow-x-auto">
-        <table className="w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="py-3 px-6">
-                Title
-              </th>
-              {authData?.role === "superAdmin" && (
-                <th scope="col" className="py-3 px-6">
-                  View Files
-                </th>
-              )}
-              <th scope="col" className="py-3 px-6">
-                Download
-              </th>
-              {authData?.role === "superAdmin" && (
-                <th scope="col" className="py-3 px-6">
-                  Delete
-                </th>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {downloads.map((download, key) => (
-              <tr
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={key}
-              >
-                <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {download.title}
-                </td>
-                {authData?.role === "superAdmin" && (
-                  <td className="py-4 px-6">
-                    <Link
-                      to={`/uploaded-files/${download._id}`}
-                      className="bg-blue-500 px-3 py-2 text-white font-bold hover:bg-blue-700"
-                    >
-                      Go to details <FontAwesomeIcon icon={faArrowRight} />
-                    </Link>
-                  </td>
-                )}
-                <td className="py-4 px-6">
-                  <a
-                    target="_blank"
-                    href={`${download.fileName}`}
-                    className="bg-gray-700 px-3 py-2 text-white font-bold hover:bg-gray-500"
-                  >
-                    Download
-                  </a>
-                </td>
-                {authData?.role === "superAdmin" && (
-                  <td className="py-4 px-6">
-                    <button
-                      onClick={(e) => deleteFile(e, download._id)}
-                      className="bg-red-500 px-3 py-2 text-white font-bold hover:bg-red-700"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
       {authData?.role === "superAdmin" && (
-        <div className="mt-8">
-          <label
-            htmlFor="dropzone-file"
-            className="flex items-center justify-center w-full h-32 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-500 dark:hover:border-gray-600"
-          >
-            <div className="flex flex-col items-center">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-            </div>
+        <div className="max-w-xl mx-auto">
+          <div className="w-full">
+            <label
+              htmlFor="countries"
+              className="block mb-2 text-sm font-medium text-blue-900 dark:text-white"
+            >
+              Select an option
+            </label>
+            <select
+              id="countries"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              required
+              className="bg-gray-50 border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option selected>Choose one</option>
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div className="mb-3 ">
+            <label
+              htmlFor="formFile"
+              className="mb-2 inline-block text-neutral-500 dark:text-neutral-400"
+            >
+              Put Your File Here
+            </label>
             <input
-              onChange={(e) => handleFileChange(e.target.files[0])}
-              id="dropzone-file"
+              className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
               type="file"
-              className="hidden"
+              id="formFile"
+              onChange={(e) => handleFileChange(e.target.files[0])}
             />
-          </label>
-          <input
-            type="text"
-            id="voice-search"
-            className="input-field w-1/2 mr-3 mt-2"
-            placeholder="File Name Here..."
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <select
-            type="text"
-            id="voice-search"
-            className="input-field mt-2"
-            onChange={(e) => setType(e.target.value)}
-            required
-          >
-            <option value="student">Student</option>
-            <option value="admin">Admin</option>
-          </select>
+          </div>
 
-          {file && title && (
+          <div>
+            <label
+              htmlFor="formFile"
+              className="mb-2 inline-block text-neutral-500 dark:text-neutral-400"
+            >
+              Title Here
+            </label>
+            <input
+              type="text"
+              id="file-title"
+              className="relative m-0 block w-full min-w-0 flex-auto  rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
+              placeholder="File Name Here..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          {
             <>
-              {!loading ? (
+              {loading ? (
+                <button className="bg-indigo-700 w-full text-white font-bold px-4 py-2 mb-3 hover:bg-indigo-400 mt-2">
+                  Uploading...
+                </button>
+              ) : (
                 <button
-                  onClick={(e) => fileUpload(e)}
-                  className="bg-green-500 text-white font-bold px-4 py-2 ml-3  hover:bg-green-400 mt-2"
+                  onClick={fileUpload}
+                  className="bg-indigo-700 w-full text-white font-bold px-4 py-2 mb-3 hover:bg-indigo-400 mt-2"
                 >
                   Upload
                 </button>
-              ) : (
-                <button className="bg-gray-500 text-white font-bold px-4 py-2  hover:bg-green-400 mt-2">
-                  Uploading...
-                </button>
               )}
             </>
-          )}
-          <p className="mt-3 text-lg">
-            {fileName}
-            <FontAwesomeIcon className="text-red-400 ml-2 text-2xl" icon={fileIcon} />
-          </p>
+          }
         </div>
       )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {downloads.map((download, key) => (
+          <div
+            className="bg-gradient-to-br from-teal-700 to-teal-600 cursor-pointer hover:from-teal-600 hover:to-teal-700 shadow-xl rounded-lg p-6 text-teal-800 "
+            key={key}
+          >
+            <p
+              className={`w-fit mb-3 text-sm px-2 rounded-xl ${
+                download.type === "admin"
+                  ? "bg-blue-900 text-white"
+                  : "bg-white"
+              }`}
+            >
+              {download.type}
+            </p>
+            <a
+              target="_blank"
+              href={`${download.fileName}`}
+              className="text-lg mb-4 text-white hover:text-blue-700"
+            >
+              {download.title}
+            </a>
+
+            <div className="flex items-center justify-between">
+              <a
+                target="_blank"
+                href={`${download.fileName}`}
+                className="bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 font-semibold rounded-full transition duration-300 ease-in-out"
+              >
+                Download
+              </a>
+              {authData?.role === "superAdmin" && (
+                <button
+                  onClick={(e) => deleteFile(e, download._id)}
+                  className=" text-red-400 hover:text-red-600 hover:underline px-4 py-2 rounded-full transition duration-300 ease-in-out"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

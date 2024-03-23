@@ -2,7 +2,8 @@ import {
   faBook,
   faBookOpenReader,
   faChalkboardUser,
-  faCheckToSlot, faDownload, faExchange, faGraduationCap, faSchool, faToolbox, faUpload
+  faCheckToSlot, faDownload,
+  faGraduationCap, faSchool, faToolbox, faUpload
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
@@ -110,6 +111,11 @@ function Dashboard() {
       text: "Uploads",
       icon: faUpload,
       link: "/my-uploads",
+    },
+    {
+      text: "New Admissions",
+      icon: faBook,
+      link: "/new-admissions",
     },
   ];
 

@@ -11,20 +11,11 @@ function EditSubject() {
   const { id } = useParams();
 
   const [formData, setFormData] = useState({});
- 
 
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
-  const getSubject = async () => {
-    try {
-      let { data } = await Axios.get(`/subject/${id}`);
-      setFormData(data);
-    } catch (error) {
-      console.log(error.response);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -48,6 +39,14 @@ function EditSubject() {
     }
   };
   useEffect(() => {
+    const getSubject = async () => {
+      try {
+        let { data } = await Axios.get(`/subject/${id}`);
+        setFormData(data);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
     getSubject();
   }, [id]);
   return (
@@ -69,7 +68,7 @@ function EditSubject() {
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
+                      className="text-lg leading-6 font-medium text-blue-900"
                       id="modal-title"
                     >
                       Update Subject
@@ -113,7 +112,25 @@ function EditSubject() {
                           name="subjectCode"
                         />
                       </div>
-                      
+                      <div className="mt-2">
+                        <label
+                          className="block  text-sm font-bold mb-2"
+                          htmlFor="name"
+                        >
+                          Total Marks 
+                        </label>
+                        <input
+                          className="focus:ring-indigo-500 focus:border-indigo-500 shadow appearance-none border rounded w-full py-4 px-3  leading-tight focus:outline-none focus:shadow-outline uppercase"
+                          id="name"
+                          type="number"
+                          required
+                          value={formData?.totalMarks}
+                          onChange={(e) => handleChange(e)}
+                          placeholder="Total Marks"
+                          defaultValue={formData?.totalMarks}
+                          name="totalMarks"
+                        />
+                      </div>
                     </form>
                   </div>
                 </div>

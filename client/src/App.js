@@ -1,38 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
+import ReactGA from "react-ga";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AdminRoutes, SuperAdminRoutes } from "./Routes";
 import AdmissionCreated from "./components/New Admission/AdmissionCreated";
-import FileDataPage from "./components/New Admission/FileDataPage";
-import { ProtectRoutes, RestrictedRoutes } from "./Consts";
 import { CourseAccountProvider } from "./context/courseAccount";
 import { UserAuthContext } from "./context/user";
 import { Auth, Student } from "./pages";
+import About from "./pages/About";
+import AdmissionStarted from "./pages/AdmissionStarted";
+import CenterRegister from "./pages/CenterRegister";
+import Downloads from "./pages/Downloads";
+import InstitutionDuty from "./pages/Duty";
+import EmailSent from "./pages/EmailSent";
+import HallTicket from "./pages/HallTicket";
+import NotificationView from "./pages/NotificationView";
+import Notifications from "./pages/Notifications";
 import AllCourses from "./pages/courses/AllCourses";
 import CourseDetails from "./pages/courses/CourseDetails";
-import EmailSent from "./pages/courses/EmailSent";
-import Downloads from "./pages/Downloads";
 import Homepage from "./pages/homepage/Homepage";
-import Navbar from "./pages/homepage/Navbar";
-import NotificationView from "./pages/NotificationView";
-import Signup from "./pages/Signup";
-import CourseResetPassword from "./pages/student/CourseResetPassword";
-import ForgetPassword from "./pages/student/ForgetPassword";
-import ForgetRegisterNumber from "./pages/student/ForgetRegister";
-import StudentLogin from "./pages/student/StudentLogin";
-import UnprotectedRoute from "./pages/student/Unprotected";
 import AllNotifications from "./pages/superAdmin/AllNotifications";
-import ViewBranch from "./pages/superAdmin/ViewBranch";
-import CourseProtected from "./pages/student/CourseProtected";
-import MyCourses from "./pages/student/MyCourses";
-import ReactGA from "react-ga";
-import StudentDownloads from "./pages/StudentDownloads";
-import HallTicket from "./pages/HallTicket";
-import About from "./pages/About";
-import CenterRegister from "./pages/CenterRegister";
-import AdmissionStarted from "./pages/AdmissionStarted";
-import Notifications from "./pages/Notifications";
-import InstitutionDuty from "./pages/Duty";
 
 export default function App() {
   ReactGA.initialize("G-CELLQQWRXC");
@@ -53,7 +41,6 @@ export default function App() {
         <CourseAccountProvider>
           <div className="w-full">
             <ToastContainer />
-            <Navbar setNavOpened={setNavOpened} navOpened={navOpened} />
             <Routes>
               <Route path="*" element={<Auth.NotFound />} />
               <Route path="/" element={<Homepage />} />
@@ -61,60 +48,23 @@ export default function App() {
               <Route path="/admission-started" element={<AdmissionStarted />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/login" element={<Auth.Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/student-login" element={<StudentLogin />} />
               <Route path="/admission-created" element={<AdmissionCreated />} />
               <Route path="/course-details/:id" element={<CourseDetails />} />
               <Route path="/all-courses" element={<AllCourses />} />
               <Route path="/institution-duty" element={<InstitutionDuty />} />
               <Route path="/email-sent/:email" element={<EmailSent />} />
-              <Route path="/mahdiyya-third-year" element={<FileDataPage />} />
-              <Route path="/branch/:id" element={<ViewBranch />} />
               <Route path="/profile/:id" element={<Student.Profile />} />
               <Route path="/add-student" element={<Student.AddStudents />} />
               <Route path="/not-logged" element={<Auth.NotLoggedIn />} />
               <Route path="/not-allowed" element={<Auth.NotAllowed />} />
               <Route path="/all-notifications" element={<AllNotifications />} />
               <Route path="/notification/:id" element={<NotificationView />} />
-              <Route path="/student-downloads" element={<StudentDownloads />} />
               <Route path="/CenterRegister" element={<CenterRegister />} />
               <Route path="/hall-ticket" element={<HallTicket />} />
               {/* <Route path="/launch" element={<LaunchBtn />} /> */}
               <Route path="/downloads" element={<Downloads />} />
 
-              <Route
-                path="/my-courses"
-                element={
-                  <CourseProtected>
-                    <MyCourses />
-                  </CourseProtected>
-                }
-              />
-              <Route
-                path="/forgot-registerNo"
-                element={
-                  <UnprotectedRoute>
-                    <ForgetRegisterNumber />
-                  </UnprotectedRoute>
-                }
-              />
-              <Route
-                path="/course/resetPassword/:token"
-                element={
-                  <UnprotectedRoute>
-                    <CourseResetPassword />
-                  </UnprotectedRoute>
-                }
-              />
-              <Route
-                path="/forgot-password/"
-                element={
-                  <UnprotectedRoute>
-                    <ForgetPassword />
-                  </UnprotectedRoute>
-                }
-              />
-              {ProtectRoutes.map((route, index) => (
+              {AdminRoutes.map((route, index) => (
                 <Route
                   key={index}
                   path={route.route}
@@ -125,7 +75,7 @@ export default function App() {
                   }
                 />
               ))}
-              {RestrictedRoutes.map((route, index) => (
+              {SuperAdminRoutes.map((route, index) => (
                 <Route
                   path={route.route}
                   key={index}

@@ -42,42 +42,42 @@ function Signup() {
       <h1 className="text-center text-blue-500 font-bold uppercase my-4">
         connect us online
       </h1>
-      <section className="bg-gray-50 w-full p-[3rem] dark:bg-gray-900">
+      <section className="bg-gray-50 w-full p-[3rem] dark:bg-blue-900">
         <div className="flex flex-col items-center justify-center lg:px-6 py-8 lg:mx-auto  lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-blue-900 md:text-2xl dark:text-white">
                 Create account
               </h1>
               <form className="space-y-4 md:space-y-6" action="#">
                 <div>
-                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-blue-900 dark:text-white">
                     Name
                   </label>
                   <input
                     type="text"
                     onChange={(e) => setName(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-blue-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Name"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-blue-900 dark:text-white">
                     Email
                   </label>
                   <input
                     type="text"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-blue-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Email"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-blue-900 dark:text-white">
                     Whatsapp Number{" "}
                   
                   </label>
@@ -85,33 +85,33 @@ function Signup() {
                   <input
                     type="text"
                     onChange={(e) => setPhone(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-blue-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Whatsapp Number"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-blue-900 dark:text-white">
                     Password
                   </label>
 
                   <input
                     type="password"
-                    className="bg-gray-50 mr-2 placeholder:text-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 mr-2 placeholder:text-sm border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="*******"
                     required
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 lg:text-sm text-[12px]  font-medium text-blue-900 dark:text-white">
                     Confirm Password
                   </label>
 
                   <input
                     type="password"
-                    className="bg-gray-50 mr-2 placeholder:text-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 mr-2 placeholder:text-sm border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="*******"
                     required
                     onChange={(e) => setConfirm(e.target.value)}

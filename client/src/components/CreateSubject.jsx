@@ -9,6 +9,7 @@ function CreateSubject({ setOpenSubject, getSubjects, setShowModel }) {
   const initialState = {
     subjectName: "",
     subjectCode: "",
+    totalMarks: "",
   };
   const [formData, setFormData] = useState(initialState);
 
@@ -94,6 +95,26 @@ function CreateSubject({ setOpenSubject, getSubjects, setShowModel }) {
                           onChange={(e) => onChange(e)}
                           placeholder="Subject Code"
                           name="subjectCode"
+                        />
+                      </div>
+                    </div>
+                    <div className="lg:col-span-1">
+                      <div className="px-4 sm:px-0">
+                        <label
+                          className="block  text-sm font-bold mb-2"
+                          htmlFor="username"
+                        >
+                          Total Marks 
+                        </label>
+                        <input
+                          className="focus:ring-indigo-500 focus:border-indigo-500 shadow appearance-none border rounded w-full py-4 px-3  leading-tight focus:outline-none focus:shadow-outline uppercase"
+                          id="username"
+                          type="number"
+                          required
+                          value={formData.totalMarks}
+                          onChange={(e) => onChange(e)}
+                          placeholder="Total marks"
+                          name="totalMarks"
                         />
                       </div>
                     </div>

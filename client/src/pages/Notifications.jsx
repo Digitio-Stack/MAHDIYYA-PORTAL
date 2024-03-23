@@ -28,7 +28,7 @@ function Notifications() {
                 href={notification?.url}
                 className="relative  w-full group mt-2 mx-2"
               >
-                <div className="relative px-7 py-6 bg-white ring-1 ring-gray-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
+                <div className="relative px-7 py-6 bg-white ring-1 ring-blue-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
                   <svg
                     className="w-8 h-8 text-purple-600"
                     fill="none"

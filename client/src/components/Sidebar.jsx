@@ -1,38 +1,29 @@
 import {
   faAdd,
   faBars,
+  faBell,
+  faBookOpen,
   faClock,
   faClose,
   faHome,
-  faPager,
+  faMarker,
+  faMessage,
   faPersonChalkboard,
   faPlus,
   faPowerOff,
   faSchool,
   faUser,
-  faBell,
-  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import Axios from "../Axios";
 import { UserAuthContext } from "./../context/user";
 
 function Sidebar() {
   const { authData, logout } = useContext(UserAuthContext);
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [unreadMessages, setUnreadMessages] = useState(0);
 
-  const getUnreadMessages = async () => {
-    try {
-      let data = await Axios.post("/messages/unread-messages");
-
-      setUnreadMessages(data.data);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
+  
   const navigations = [
     {
       name: "Dashboard",
@@ -45,11 +36,17 @@ function Sidebar() {
       route: "/create-teacher",
       icon: faPersonChalkboard,
     },
-    // {
-    //   name: "My Messages",
-    //   route: "/my-messages",
-    //   icon: faMessage,
-    // },
+    {
+      name: "Result Management",
+      route: "/add-result",
+      icon: faMarker,
+    },
+    {
+      name: "Marks",
+      route: "/marks",
+      icon: faBookOpen,
+    },
+    
   ];
   const SuperAdmin = [
     {
@@ -83,9 +80,7 @@ function Sidebar() {
       icon: faMessage,
     },
   ];
-  useEffect(() => {
-    getUnreadMessages();
-  }, []);
+
   return (
     <>
       <div onClick={() => setOpenSidebar(!openSidebar)}>
@@ -116,35 +111,15 @@ function Sidebar() {
               !openSidebar && "hidden"
             } top-0 bottom-0 lg:left-0 p-2 lg:w-[250px] w-full overflow-y-auto text-center bg-gray-900`}
         >
-          <div className="text-gray-100 text-xl">
-            <div className="p-2.5 mt-1 flex items-center">
-              <Link
-                to={"/"}
-                className="font-bold text-[#76BA99] text-[25px] ml-3"
-              >
-                <div className="bg-white">
-                  <img src="/logo.png" className="max-w-[200px]" alt="" />
-                </div>
-              </Link>
-            </div>
+          <div className="p-2.5 mt-1 mb-6 flex items-center">
+            <Link to={"/"} className=" ml-3">
+              <h1 className="font-bold text-3xl text-gray-400 border-b-2">
+                DASHBOARD
+              </h1>
+            </Link>
             <div className="my-2 bg-gray-600 h-[1px]" />
           </div>
-          {authData?.role === "admin" && (
-            <NavLink
-              to={"/my-messages"}
-              className={({ isActive }) =>
-                isActive
-                  ? "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 bg-blue-600 cursor-pointer hover:bg-blue-600 text-white"
-                  : "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-              }
-            >
-              <FontAwesomeIcon icon={faMessage} />
-              <span className="text-[15px] ml-4 text-gray-200 font-bold">
-                My Messages
-              </span>
-              {/* <span className="text-white ml-2 bg-red-500 px-2 rounded-full">{unreadMessages}</span> */}
-            </NavLink>
-          )}
+
           {authData?.role === "admin" &&
             navigations.map((navigation, index) => (
               <>
@@ -183,36 +158,19 @@ function Sidebar() {
                 </NavLink>
               </>
             ))}
-          <a
-            href="/add-student"
-            target={"_blank"}
-            className={
-              "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300  cursor-pointer hover:bg-blue-600 text-white"
-            }
-          >
-            <FontAwesomeIcon icon={faAdd} />
-            <span className="text-[15px] ml-4 text-gray-200 font-bold">
-              new admission
-            </span>
-          </a>
 
           <div className="my-4 bg-gray-600 h-[1px]" />
 
           {authData ? (
             <div className="absolute bottom-2">
-              <div className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 text-white">
-                <FontAwesomeIcon icon={faUser} />
-                {authData.role === "admin" ? (
+              <div className="p-2.5 mt-3 flex items-center rounded-md px-4  bg-teal-500 duration-300 text-white">
+                {authData && (
                   <Link
                     to={"/profile"}
-                    className="text-[15px] ml-4 text-teal-700 font-bold uppercase"
+                    className="text-[15px] ml-4  px-3 text-white font-bold uppercase"
                   >
-                    My Account
+                    <FontAwesomeIcon icon={faUser} /> {authData.username}
                   </Link>
-                ) : (
-                  <div className="text-[15px] ml-4 text-teal-700 font-bold uppercase">
-                    My Account
-                  </div>
                 )}
               </div>
               <div
@@ -236,6 +194,34 @@ function Sidebar() {
               </span>
             </Link>
           )}
+          {authData?.role === "admin" && (
+            <NavLink
+              to={"/my-messages"}
+              className={({ isActive }) =>
+                isActive
+                  ? "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 bg-blue-600 cursor-pointer hover:bg-blue-600 text-white"
+                  : "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+              }
+            >
+              <FontAwesomeIcon icon={faMessage} />
+              <span className="text-[15px] ml-4 text-gray-200 font-bold">
+                My Messages
+              </span>
+              {/* <span className="text-white ml-2 bg-red-500 px-2 rounded-full">{unreadMessages}</span> */}
+            </NavLink>
+          )}
+          <a
+            href="/add-student"
+            target={"_blank"}
+            className={
+              "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300  cursor-pointer hover:bg-blue-600 text-white"
+            }
+          >
+            <FontAwesomeIcon icon={faAdd} />
+            <span className="text-[15px] ml-4 text-gray-200 font-bold">
+              new admission
+            </span>
+          </a>
         </div>
       </div>
     </>

@@ -53,7 +53,7 @@ function BranchBasedDetails() {
           <Link
             to={"/all-students/" + id + `/${item._id}`}
             key={key}
-            className="bg-gray-900 w-full mx-5 py-4 px-4"
+            className="bg-blue-900 w-full mx-5 py-4 px-4"
           >
             <>
               {classes

@@ -44,7 +44,7 @@ function HallTicket() {
             <input
               type="text"
               onChange={(e) => setRegisterNo(e.target.value)}
-              className="block w-full rounded-md border border-gray-900 pl-7 pr-12 focus:border-gray-900 focus:ring-indigo-500 sm:text-sm"
+              className="block w-full rounded-md border border-blue-900 pl-7 pr-12 focus:border-blue-900 focus:ring-indigo-500 sm:text-sm"
               placeholder="register number"
               value={registerNo}
             />
@@ -85,7 +85,7 @@ function HallTicket() {
             }}
           >
             <div style={{ width: "100%", height: "100%" }}>
-              <div className="border border-gray-900">
+              <div className="border border-blue-900">
                 <div className=" border-b-2 border-gray-800 p-2 ">
                   <div className="flex flex-wrap ">
                     <div className="pr-4 pl-4 flex-1">
@@ -143,12 +143,12 @@ function HallTicket() {
                   </div>
                 </div>
 
-                <div className=" border border-gray-900 mb-2 m-4 p-4 text-center mt-2 ">
+                <div className=" border border-blue-900 mb-2 m-4 p-4 text-center mt-2 ">
                   <div className="flex flex-wrap ">
                     <div className="w-full pr-4 pl-4">
-                      <table className="w-full  mb-4 bg-transparent table-border border-gray-900">
+                      <table className="w-full  mb-4 bg-transparent table-border border-blue-900">
                         <thead>
-                          <tr className="border text-sm border-gray-900">
+                          <tr className="border text-sm border-blue-900">
                             <th className=" border-r border-black">Date</th>
                             <th className=" border-r border-black">Subject</th>
                             <th className=" border-r border-black">Code</th>
@@ -160,7 +160,7 @@ function HallTicket() {
                         </thead>
                         <tbody>
                           {data?.subjects?.map((subject, key) => (
-                            <tr key={key} className="border border-gray-900">
+                            <tr key={key} className="border border-blue-900">
                               <td className="text-sm  border-r border-black ">
                                 {moment(subject?.date).format("DD-MM-YYYY")}
                               </td>
@@ -183,8 +183,8 @@ function HallTicket() {
                     </div>
                   </div>
                 </div>
-                <div className=" border  border-gray-900 m-4 p-4  mt-2 mb-2">
-                  <h5 className="text-center bg-gray-900 text-white rounded-[30px] font-bold uppercase mb-4">
+                <div className=" border  border-blue-900 m-4 p-4  mt-2 mb-2">
+                  <h5 className="text-center bg-blue-900 text-white rounded-[30px] font-bold uppercase mb-4">
                     Rules and Regulations
                   </h5>
                   <p className="text-black  text-[12px]">

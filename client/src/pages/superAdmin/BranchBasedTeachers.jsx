@@ -32,26 +32,26 @@ function BranchBasedTeachers() {
                 <tr>
                   <th
                     scope="col"
-                    className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                   >
                     #
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                   >
                     USERNAME
                   </th>
                   <th
                     scope="col"
-                    className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                   >
                     BRANCH
                   </th>
 
                   <th
                     scope="col"
-                    className="text-sm font-bold text-gray-900 px-6 py-4 text-left"
+                    className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                   >
                     PHONE
                   </th>
@@ -60,16 +60,16 @@ function BranchBasedTeachers() {
               <tbody>
                 {teachers.map((teacher, index) => (
                   <tr key={index} className="border-b">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-900">
                       {index + 1}
                     </td>
-                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                    <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                       {teacher.teacherName}
                     </td>
-                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                    <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                       {teacher.branch?.branchName}
                     </td>
-                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                    <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                       {teacher.branch?.phone}
                     </td>
                   </tr>

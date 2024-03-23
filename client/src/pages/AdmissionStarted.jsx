@@ -23,7 +23,7 @@ function AdmissionStarted() {
         <div className="relative px-6 lg:px-8">
           <div className="mx-auto max-w-4xl py-32 sm:py-48 lg:py-56">
             {/* <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full py-1 px-3 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+            <div className="relative rounded-full py-1 px-3 text-sm leading-6 text-gray-600 ring-1 ring-blue-900/10 hover:ring-blue-900/20">
               About Us
             </div>
           </div> */}
@@ -109,7 +109,7 @@ function AdmissionStarted() {
                   name="branch"
                   onChange={(e) => setSelectedBranch(e.target.value)}
                   id=""
-                  className="bg-gray-50 mb-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                  className="bg-gray-50 mb-4 border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 >
                   <option hidden>Select </option>
                   {DISTRICT.map((district, index) => (

@@ -36,13 +36,8 @@ function VerifyDetails({
     { lableName: "Pin Code", value: formData.pinCode, error: errors.pinCode },
     { lableName: "District", value: formData.district, error: errors.district },
     { lableName: "State", value: formData.state, error: errors.state },
-    { lableName: "DOB Date", value: formData.dobDate, error: errors.dobDate },
-    {
-      lableName: "DOB Month",
-      value: formData.dobMonth,
-      error: errors.dobMonth,
-    },
-    { lableName: "DOB Year", value: formData.dobYear, error: errors.dobYear },
+   
+    { lableName: "DOB ", value: formData.dateOfBirth, error: errors.dateOfBirth },
     {
       lableName: "Selected Class",
       value: selectedClass,
@@ -114,7 +109,7 @@ function VerifyDetails({
             <div className="flex">
               <button
                 onClick={prevPage}
-                className="w-full mt-3 lg:mt-7 bg-gray-900 mx-2 hover:bg-gray-800 text-white font-bold py-4 px-4 rounded focus:outline-none focus:shadow-outline uppercase"
+                className="w-full mt-3 lg:mt-7 bg-blue-900 mx-2 hover:bg-gray-800 text-white font-bold py-4 px-4 rounded focus:outline-none focus:shadow-outline uppercase"
               >
                 GO BACK
               </button>
