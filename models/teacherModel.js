@@ -35,7 +35,12 @@ const teacherSchema = new mongoose.Schema({
     required: [true, "gender is required"],
     emum: ["male", "female"],
   },
+  deleted: { type: Boolean, default: false },
 });
-
+teacherSchema.pre(/^find/, function (next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
 const Teacher = mongoose.model("Teacher", teacherSchema);
 module.exports = Teacher;

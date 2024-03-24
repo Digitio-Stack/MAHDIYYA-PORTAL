@@ -113,6 +113,23 @@ exports.getMyStudents = async (req, res, next) => {
     next(error);
   }
 };
+exports.getBranchStudents = async (req, res, next) => {
+  try {
+    let data = await Student.aggregate([
+      {
+        $match: {
+          branch: mongoose.Types.ObjectId(req.params.branchId),
+          class: mongoose.Types.ObjectId(req.params.classId),
+          verified: true,
+        },
+      },
+    ]);
+
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 exports.getMyAdmissions = async (req, res, next) => {
   try {
     let data = await Student.find({ branch: req.user.branch, verified: false })

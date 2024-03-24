@@ -12,7 +12,7 @@ router.post(
 router.get(
   "/",
   catchAsync(async (req, res, next) => {
-    let data = await Class.find();
+    let data = await Class.find()
     res.status(200).json(data);
   })
 );

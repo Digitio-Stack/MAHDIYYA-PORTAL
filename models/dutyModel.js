@@ -7,6 +7,8 @@ const dutySchema = new Schema({
     type: String,
     required: true,
   },
+  deleted: { type: Boolean, default: false },
+
   institutionName: {
     type: String,
     required: true,
@@ -22,6 +24,11 @@ const dutySchema = new Schema({
   },
 });
 
+dutySchema.pre(/^find/, function(next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
 // Create the Mongoose model
 const Duty = mongoose.model("Duty", dutySchema);
 

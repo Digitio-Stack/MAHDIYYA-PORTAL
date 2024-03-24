@@ -26,6 +26,7 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add course details"],
     },
+    deleted: { type: Boolean, default: false },
     description: {
       type: String,
       required: [true, "Please add course details"],
@@ -47,6 +48,10 @@ const courseSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
+courseSchema.pre(/^find/, function(next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
 const Course = mongoose.model("Course", courseSchema);
 module.exports = Course;

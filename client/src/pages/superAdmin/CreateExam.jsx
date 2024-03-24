@@ -44,7 +44,7 @@ function CreateExam() {
   };
   const getSubjects = async () => {
     try {
-      let { data } = await Axios.get("/subject");
+      let { data } = await Axios.get("/subject?class=" + selectedClass);
       setSubjects(data);
     } catch (error) {
       console.log(error);
@@ -98,8 +98,10 @@ function CreateExam() {
   useEffect(() => {
     getExams();
     getClasses();
-    getSubjects();
   }, []);
+  useEffect(() => {
+    selectedClass && getSubjects();
+  }, [selectedClass]);
   return (
     <>
       <ExamTable getExams={getExams} data={exams} />
@@ -169,18 +171,18 @@ function CreateExam() {
                 <input
                   className="focus:ring-indigo-500 mx-2 focus:border-indigo-500 shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline uppercase"
                   id="username"
-                  type="time"
+                  type="text"
                   required
-                  placeholder="time"
+                  placeholder="hh:mm"
                   name="time"
                   onChange={(event) => handleInputChange(key, event)}
                 />
                 <input
                   className="focus:ring-indigo-500 focus:border-indigo-500 shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline uppercase"
                   id="username"
-                  type="date"
+                  type="text"
                   required
-                  placeholder="date"
+                  placeholder="DD-MM-YYYY"
                   name="date"
                   onChange={(event) => handleInputChange(key, event)}
                 />
@@ -205,7 +207,7 @@ function CreateExam() {
           </button>
         </div>
       </form>
-      <form className="mx-auto my-4 w-1/2">
+      <form className="mx-auto my-4 w-1/2 mt-[8rem]">
         <h1 className="text-3xl font-bold">Create Exam </h1>
         <div className="relative z-0 mb-6 w-full group">
           <input

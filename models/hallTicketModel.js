@@ -11,6 +11,7 @@ const HallTicketSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "Class",
   },
+  deleted: { type: Boolean, default: false },
   subjects: [
     {
       subjectId: {
@@ -21,12 +22,15 @@ const HallTicketSchema = new mongoose.Schema({
         type: String,
       },
       date: {
-        type: Date,
+        type: String,
       },
     },
   ],
 });
-
-
+HallTicketSchema.pre(/^find/, function (next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
 const HallTicket = mongoose.model("HallTicket", HallTicketSchema);
 module.exports = HallTicket;

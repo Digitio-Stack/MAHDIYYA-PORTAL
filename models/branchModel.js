@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
+const preRemoveMiddleware = require("./trashModel");
 
 const branchSchema = new mongoose.Schema({
   branchName: {
@@ -57,6 +58,7 @@ const branchSchema = new mongoose.Schema({
   imageCover: String,
   images: [String],
   admin: { type: mongoose.Types.ObjectId },
+  deleted: { type: Boolean, default: false },
 });
 
 branchSchema.pre(/^find/, function (next) {
@@ -71,6 +73,8 @@ branchSchema.pre("save", function (next) {
   this.slug = slugify(this.branchName, { lower: true });
   next();
 });
+
+branchSchema.pre("findByIdAndDelete", preRemoveMiddleware);
 
 const Branch = mongoose.model("Branch", branchSchema);
 

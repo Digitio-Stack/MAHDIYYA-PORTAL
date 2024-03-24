@@ -11,8 +11,9 @@ import {
   faPersonChalkboard,
   faPlus,
   faPowerOff,
+  faRecycle,
   faSchool,
-  faUser,
+  faUser
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
@@ -23,7 +24,6 @@ function Sidebar() {
   const { authData, logout } = useContext(UserAuthContext);
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  
   const navigations = [
     {
       name: "Dashboard",
@@ -36,17 +36,12 @@ function Sidebar() {
       route: "/create-teacher",
       icon: faPersonChalkboard,
     },
-    {
-      name: "Result Management",
-      route: "/add-result",
-      icon: faMarker,
-    },
+
     {
       name: "Marks",
       route: "/marks",
       icon: faBookOpen,
     },
-    
   ];
   const SuperAdmin = [
     {
@@ -78,6 +73,16 @@ function Sidebar() {
       name: "Create Messages",
       route: "/create-messages",
       icon: faMessage,
+    },
+    {
+      name: "Result Management",
+      route: "/add-result",
+      icon: faMarker,
+    },
+    {
+      name: "Recycle Bin",
+      route: "/trash",
+      icon: faRecycle,
     },
   ];
 

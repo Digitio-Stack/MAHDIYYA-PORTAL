@@ -15,7 +15,15 @@ router
   })
   .get(async (req, res) => {
     try {
-      let data = await Subject.find();
+      let query;
+      if (req.query) {
+        query = req.query;
+      } else {
+        query = {};
+      }
+
+      let data = await Subject.find(query).populate("class");
+
       res.status(200).json(data);
     } catch (error) {
       console.log(error);

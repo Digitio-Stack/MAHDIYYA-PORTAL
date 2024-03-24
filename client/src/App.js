@@ -21,6 +21,7 @@ import AllCourses from "./pages/courses/AllCourses";
 import CourseDetails from "./pages/courses/CourseDetails";
 import Homepage from "./pages/homepage/Homepage";
 import AllNotifications from "./pages/superAdmin/AllNotifications";
+import Result from "./pages/Result";
 
 export default function App() {
   ReactGA.initialize("G-CELLQQWRXC");
@@ -46,6 +47,7 @@ export default function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/about-us" element={<About />} />
               <Route path="/admission-started" element={<AdmissionStarted />} />
+              <Route path="/result" element={<Result />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/login" element={<Auth.Login />} />
               <Route path="/admission-created" element={<AdmissionCreated />} />

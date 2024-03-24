@@ -1,15 +1,12 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Axios from "../../../Axios";
 
 const StudentMarks = () => {
-  const [students, setStudents] = useState([]);
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
-  const [selectedStudent, setSelectedStudent] = useState(null);
   const [results, setResults] = useState([]);
-  const [status, setStatus] = useState(null);
-  const [result, setResult] = useState(null);
+  const [exams, setExams] = useState([]);
+  const [selectedExam, setSelectedExam] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -22,34 +19,26 @@ const StudentMarks = () => {
         console.error(error);
       }
     };
-    fetchClasses();
-  }, []);
-
-  useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchExams = async () => {
       try {
-        const response = await Axios.get(
-          "/student/my-students/data/" + selectedClass
-        );
-        setStudents(response.data);
+        const response = await Axios.get("/exam");
+        setExams(response.data);
       } catch (error) {
         console.error(error);
       }
     };
-
-    fetchStudents();
-  }, [selectedClass]);
+    fetchExams();
+    fetchClasses();
+  }, []);
 
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      if (selectedStudent) {
+      if (selectedClass) {
         try {
-          const response = await Axios.get(
-            `/result?studentId=${selectedStudent}`
-          );
+          const response = await Axios.get(`/result?classId=${selectedClass}&examId=${selectedExam}`);
+          console.log(response.data);
           setResults(response.data.results);
-          setResult(response.data);
           setLoading(false);
         } catch (error) {
           console.error(error);
@@ -60,11 +49,39 @@ const StudentMarks = () => {
     };
 
     fetchResults();
-  }, [selectedStudent]);
+  }, [selectedClass]);
+
+  const extractSubjectNames = () => {
+    const subjectNames = [];
+    results.forEach((mark) => {
+      if (!subjectNames.includes(mark.subject.subjectName)) {
+        subjectNames.push(mark.subject.subjectName);
+      }
+    });
+    return subjectNames;
+  };
 
   return (
     <div className="max-w-4xl mx-auto my-8">
       <h1 className="text-3xl font-bold mb-6">Student Marks</h1>
+      <div className="mb-4">
+        <label className="block font-semibold mb-2" htmlFor="student">
+          Select Exam:
+        </label>
+        <select
+          id="class"
+          className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          value={selectedExam}
+          onChange={(e) => setSelectedExam(e.target.value)}
+        >
+          <option >Select Exam</option>
+          {exams.map((examItem) => (
+            <option className="text-black" key={examItem._id} value={examItem._id}>
+              {examItem.examName}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="mb-4">
         <label className="block font-semibold mb-2" htmlFor="student">
           Select Class:
@@ -83,87 +100,60 @@ const StudentMarks = () => {
           ))}
         </select>
       </div>
-      <div className="mb-4">
-        <label className="block font-semibold mb-2" htmlFor="student">
-          Select Student:
-        </label>
-        <select
-          id="student"
-          className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          value={selectedStudent}
-          onChange={(e) => setSelectedStudent(e.target.value)}
-        >
-          <option hidden>Select a student</option>
-          {students.map((student) => (
-            <option key={student._id} value={student._id}>
-              {student.studentName}{" "}
-            </option>
-          ))}
-        </select>
-      </div>
+
       {loading ? (
         <p>loading...</p>
       ) : (
         <>
-          {selectedStudent && (
+          {selectedClass && (
             <div>
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-gray-200">
-                    <th className="py-2 px-4 border">Subject</th>
-                    <th className="py-2 px-4 border">Marks Obtained</th>
-                    <th className="py-2 px-4 border">Total Marks</th>
-                    <th className="py-2 px-4 border">Status </th>
+                  <tr>
+                    <th className="border border-gray-800 p-2">Student</th>
+                    {/* Render table headers with subject names */}
+                    {extractSubjectNames().map((subjectName) => (
+                      <th
+                        key={subjectName}
+                        className="border border-gray-800 p-2"
+                      >
+                        {subjectName}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {results?.length > 0 ? (
-                    results.map((result) => (
-                      <tr
-                        key={result._id}
-                        className="border-b hover:bg-gray-100"
-                      >
-                        <td className="py-2 px-4 border">
-                          {result?.subject?.subjectName}
-                        </td>
-                        <td className="py-2 px-4 border">
-                          {result?.marksObtained}
-                        </td>
-                        <td className="py-2 px-4 border">
-                          {result?.subject?.totalMarks}
-                        </td>
-                        <td
-                          className={`py-2 px-4 border ${
-                            result.marksObtained >= 40
-                              ? "text-green-500"
-                              : "text-red-500"
-                          }`}
-                        >
-                          {result.marksObtained >= 40 ? "P" : "F"}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <p className="text-gray-100 text-center bg-red-700 uppercase mt-5 ">
-                      result not found
-                    </p>
-                  )}
+                  {results.map((studentResult) => (
+                    <tr key={studentResult.student.$oid}>
+                      <td className="border border-gray-800 p-2">
+                        {studentResult.student.studentName}
+                      </td>
+                      {/* Render marks obtained for each subject */}
+                      {extractSubjectNames().map((subjectName) => {
+                        // Find the mark for the current student and subject
+                        const mark = results.find(
+                          (m) =>
+                            m.student._id === studentResult.student._id &&
+                            m.subject.subjectName === subjectName
+                        );
+                        // Render the marks obtained or "F" if no mark is found
+                        return (
+                          <td
+                            key={subjectName}
+                            className={`border border-gray-800 p-2 ${
+                              mark.marksObtained >= 40
+                                ? "bg-gray-200"
+                                : "bg-red-400"
+                            }`}
+                          >
+                            {mark ? mark.marksObtained : "F"}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
-              {results.length > 0 && (
-                <div className="bg-gray-200 p-4">
-                  <p
-                    className={` text-white font-semibold  w-auto mt-2 ${
-                      status === "Promoted" ? "text-green-500" : "text-red-600"
-                    }`}
-                  >
-                    {result?.status}
-                  </p>
-                  <p className="text-gray-600 font-semibold mb-2 bg-gray-100 p-2">Grand Total: {result?.grandTotal}</p>
-                  <p className="text-gray-600 font-semibold mb-2 bg-gray-100 p-2">Percentage: {result?.percentage}%</p>
-                  <p className="text-gray-600 font-semibold mb-2 bg-gray-100 p-2">Out Of: {result?.totalPossibleMarks} Marks </p>
-                </div>
-              )}
             </div>
           )}
         </>

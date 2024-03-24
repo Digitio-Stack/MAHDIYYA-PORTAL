@@ -17,7 +17,17 @@ const subjectSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Total mark is required"],
   },
+  class: {
+    type: mongoose.Types.ObjectId,
+    required: [true, "Class is required"],
+    ref: "Class",
+  },
+  deleted: { type: Boolean, default: false },
 });
-
+subjectSchema.pre(/^find/, function (next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
 const Subject = mongoose.model("Subject", subjectSchema);
 module.exports = Subject;

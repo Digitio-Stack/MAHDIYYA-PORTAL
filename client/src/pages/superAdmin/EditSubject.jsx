@@ -10,6 +10,9 @@ function EditSubject() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [classes, setClasses] = useState([]);
+  const [classItem, setClass] = useState(null);
+
   const [formData, setFormData] = useState({});
 
   const handleChange = (e) => {
@@ -21,7 +24,10 @@ function EditSubject() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await Axios.patch("/subject/" + id, formData);
+      let res = await Axios.patch("/subject/" + id, {
+        ...formData,
+        class: classItem,
+      });
       if (res.status === 200) {
         setFormData({ name: "", deadline: "", type: "" });
         toast.success("schedule successfully added", {
@@ -38,6 +44,18 @@ function EditSubject() {
       });
     }
   };
+
+  useEffect(() => {
+    const getClasses = async () => {
+      try {
+        let { data } = await Axios.get(`/class`);
+        setClasses(data);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    getClasses();
+  }, []);
   useEffect(() => {
     const getSubject = async () => {
       try {
@@ -47,6 +65,7 @@ function EditSubject() {
         console.log(error.response);
       }
     };
+
     getSubject();
   }, [id]);
   return (
@@ -117,7 +136,7 @@ function EditSubject() {
                           className="block  text-sm font-bold mb-2"
                           htmlFor="name"
                         >
-                          Total Marks 
+                          Total Marks
                         </label>
                         <input
                           className="focus:ring-indigo-500 focus:border-indigo-500 shadow appearance-none border rounded w-full py-4 px-3  leading-tight focus:outline-none focus:shadow-outline uppercase"
@@ -130,6 +149,31 @@ function EditSubject() {
                           defaultValue={formData?.totalMarks}
                           name="totalMarks"
                         />
+                      </div>
+                      <div className="mt-2">
+                        <label
+                          className="block  text-sm font-bold mb-2"
+                          htmlFor="name"
+                        >
+                          Class
+                        </label>
+                        <select
+                          className="focus:ring-indigo-500 focus:border-indigo-500 shadow appearance-none border rounded w-full py-4 px-3  leading-tight focus:outline-none focus:shadow-outline uppercase"
+                          id="name"
+                          type="number"
+                          required
+                          value={formData?.class}
+                          onChange={(e) => setClass(e.target.value)}
+                          defaultValue={formData?.class}
+                          name="class"
+                        >
+                          <option hidden>select class </option>
+                          {classes.map((item, key) => (
+                            <option key={key} value={item._id}>
+                              {item.className}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     </form>
                   </div>

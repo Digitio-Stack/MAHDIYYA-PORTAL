@@ -9,6 +9,7 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  deleted: { type: Boolean, default: false },
   recipients: [
     {
       user: {
@@ -24,6 +25,11 @@ const messageSchema = new mongoose.Schema({
   ],
 });
 
+messageSchema.pre(/^find/, function(next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
 const Message = mongoose.model("Message", messageSchema);
 
 module.exports = Message;

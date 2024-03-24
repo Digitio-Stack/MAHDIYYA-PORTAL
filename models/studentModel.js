@@ -78,10 +78,15 @@ const studentSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       required: [true, "Please select a class"],
       ref: "Class",
-    },
+    },  deleted: { type: Boolean, default: false }
+
   },
   { timestamps: true }
 );
-
+studentSchema.pre(/^find/, function(next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
 const Student = mongoose.model("Student", studentSchema);
 module.exports = Student;

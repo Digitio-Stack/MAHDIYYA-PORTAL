@@ -1,4 +1,5 @@
 const APIFeatures = require("./ApiFeatures");
+const Trash = require("../models/trashModel");
 
 exports.createOne = (Model) => async (req, res, next) => {
   try {
@@ -55,19 +56,29 @@ exports.updateOne = (Model) => async (req, res) => {
     res.status(400).json(error);
   }
 };
-exports.deleteStatus = (Model) => async (req, res) => {
-  try {
-    let data = await Model.findByIdAndUpdate(req.params.id, { deleted: true });
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
+
 exports.deleteOne = (Model) => async (req, res) => {
   try {
-    await Model.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "document deleted" });
+    const document = await Model.findByIdAndUpdate(
+      req.params.id,
+      { deleted: true },
+      { new: true }
+    );
+
+    if (!document) {
+      throw new Error("Document not found");
+    }
+
+    const trashedDocument = new Trash({
+      documentType: Model.modelName,
+      data: document.toObject(),
+    });
+
+    await trashedDocument.save();
+
+    res.status(200).json({ message: "Document deleted" });
   } catch (error) {
     res.status(400).json(error);
   }
 };
+

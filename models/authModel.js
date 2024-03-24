@@ -23,12 +23,20 @@ const authSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Branch",
     },
+    deleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
   }
 );
-//BCRYPT
+
+
+authSchema.pre(/^find/, function(next) {
+  // Only include documents where the deleted field is not true
+  this.find({ deleted: { $ne: true } });
+  next();
+});
+
 authSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);

@@ -15,10 +15,9 @@ import CreateCourse from "./pages/superAdmin/CreateCourse";
 import CreateExam from "./pages/superAdmin/CreateExam";
 import CreateMessage from "./pages/superAdmin/CreateMessage";
 import CreateNotification from "./pages/superAdmin/CreateNotification";
-import CreateSchedule from "./pages/superAdmin/CreateSchedule";
 import EditCourse from "./pages/superAdmin/EditCourse";
-import EditNews from "./pages/superAdmin/EditNews";
 import EditSubject from "./pages/superAdmin/EditSubject";
+import RecycleBin from "./pages/superAdmin/RecycleBin";
 import UploadedFiles from "./pages/superAdmin/UploadedFiles";
 
 export const SuperAdminRoutes = [
@@ -71,11 +70,7 @@ export const SuperAdminRoutes = [
     role: "superAdmin",
   },
 
-  {
-    route: "/create-schedule",
-    component: <CreateSchedule />,
-    role: "superAdmin",
-  },
+ 
   {
     route: "/admission-requests",
     component: <AdmissionRequests />,
@@ -85,11 +80,6 @@ export const SuperAdminRoutes = [
   {
     route: "/class-management",
     component: <ClassManagment />,
-    role: "superAdmin",
-  },
-  {
-    route: "/edit-news/:id",
-    component: <EditNews />,
     role: "superAdmin",
   },
   {
@@ -132,6 +122,16 @@ export const SuperAdminRoutes = [
     route: "/create-messages",
     component: <CreateMessage />,
     role: "superAdmin",
+  },
+  {
+    route: "/add-result",
+    component: <AddResult />,
+    role:"superAdmin"
+  },
+  {
+    route: "/trash",
+    component: <RecycleBin />,
+    role:"superAdmin"
   },
 ];
 
@@ -190,10 +190,7 @@ export const AdminRoutes = [
     route: "/my-messages",
     component: <MyMessages />,
   },
-  {
-    route: "/add-result",
-    component: <AddResult />,
-  },
+ 
   {
     route: "/marks",
     component: <Marks />,

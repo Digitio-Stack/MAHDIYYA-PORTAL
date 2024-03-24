@@ -24,7 +24,12 @@ function AllSubjects() {
   }, []);
   return (
     <>
-      {openSubject && <CreateSubject setShowModel={setOpenSubject} getSubjects={getSubjects}/>}
+      {openSubject && (
+        <CreateSubject
+          setShowModel={setOpenSubject}
+          getSubjects={getSubjects}
+        />
+      )}
       {!openSubject && (
         <button
           onClick={() => setOpenSubject(true)}
@@ -75,13 +80,19 @@ function AllSubjects() {
                       scope="col"
                       className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                     >
-                       SUBJECT CODE
+                      SUBJECT CODE
                     </th>
                     <th
                       scope="col"
                       className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
                     >
-                       TOTAL MARKS 
+                      CLASS
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-sm font-bold text-blue-900 px-6 py-4 text-left"
+                    >
+                      TOTAL MARKS
                     </th>
 
                     <th
@@ -103,6 +114,9 @@ function AllSubjects() {
                       </td>
                       <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {subject?.subjectCode}
+                      </td>
+                      <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
+                        {subject?.class?.className}
                       </td>
                       <td className="text-sm text-blue-900 font-light px-6 py-4 whitespace-nowrap">
                         {subject?.totalMarks}

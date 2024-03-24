@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Result = require("../models/resultModel");
+const Student = require("../models/studentModel");
 
 exports.getAllResults = async (req, res) => {
   try {
@@ -10,6 +11,48 @@ exports.getAllResults = async (req, res) => {
   }
 };
 
+exports.getMyResults = async (req, res) => {
+  try {
+    let student = await Student.findOne({ registerNo: req.params.registerNo });
+    let results = await Result.find({
+      student: student._id,
+    })
+      .populate("student")
+      .populate("subject")
+      .populate("exam");
+
+    if (results.length === 0) {
+      return res.status(200).json({ message: "Result Not Found" });
+    }
+
+    const allSubjectsPassed = results.every(
+      (result) => result.marksObtained >= 40
+    );
+
+    const grandTotal = results.reduce(
+      (total, result) => total + result.marksObtained,
+      0
+    );
+
+    // Calculate total possible marks (assuming each subject has a maximum of 100 marks)
+    const totalPossibleMarks = results.length * 100;
+
+    // Calculate percentage
+    const percentage = (grandTotal / totalPossibleMarks) * 100;
+    const roundedPercentage = Math.floor(percentage);
+
+    return res.json({
+      results,
+      status: allSubjectsPassed ? "Promoted" : "Not promoted",
+      grandTotal,
+      percentage: roundedPercentage,
+      totalPossibleMarks,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 exports.getResults = async (req, res) => {
   try {
     let results;
@@ -46,20 +89,16 @@ exports.getResults = async (req, res) => {
         results,
         status: allSubjectsPassed ? "Promoted" : "Not promoted",
         grandTotal,
-        percentage:roundedPercentage,
+        percentage: roundedPercentage,
         totalPossibleMarks,
       });
-    }
-    // Check if the 'subjectId' query parameter is present
-    else if (req.query.subjectId) {
+    } else if (req.query.classId && req.query.examId) {
       results = await Result.find({
-        "exam.subject": mongoose.Types.ObjectId(req.query.subjectId),
+        class: mongoose.Types.ObjectId(req.query.classId),
+        exam: mongoose.Types.ObjectId(req.query.examId),
       })
         .populate("student")
-        .populate({
-          path: "exam",
-          populate: { path: "subject" },
-        });
+        .populate("subject");
 
       if (results.length === 0) {
         return res.status(404).json({ message: "No results found" });
@@ -74,18 +113,111 @@ exports.getResults = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.getGlobalResults = async (req, res) => {
+  try {
+    let data = await Result.aggregate([
+      {
+        $lookup: {
+          from: "students",
+          localField: "student",
+          foreignField: "_id",
+          as: "student_info",
+        },
+      },
+      {
+        $unwind: "$student_info",
+      },
+      {
+        $lookup: {
+          from: "branches",
+          localField: "student_info.branch",
+          foreignField: "_id",
+          as: "branch_info",
+        },
+      },
+      {
+        $lookup: {
+          from: "classes",
+          localField: "student_info.class",
+          foreignField: "_id",
+          as: "class_info",
+        },
+      },
+      {
+        $lookup: {
+          from: "subjects",
+          localField: "subject",
+          foreignField: "_id",
+          as: "subjectInfo",
+        },
+      },
+      {
+        $unwind: "$branch_info",
+      },
+      {
+        $unwind: "$class_info",
+      },
+      {
+        $unwind: "$subjectInfo",
+      },
+      {
+        $group: {
+          _id: {
+            class: "$class_info.className",
+            branch: "$branch_info.branchName",
+            branchCode: "$branch_info.branchCode",
+            subject: "$subjectInfo.subjectName",
+          },
+          count: { $sum: 1 }, // Optionally, you can count the number of results for each group
+        },
+      },
+    ]);
+    
 
-exports.createResult = async (req, res) => {
-  const result = new Result({
-    student: req.body.student,
-    exam: req.body.exam,
-    marksObtained: req.body.marksObtained,
-    subject: req.body.subject,
-  });
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.createResults = async (req, res) => {
+  const resultsData = req.body; // Array of objects containing student results
 
   try {
-    const newResult = await result.save();
-    res.status(201).json(newResult);
+    const results = await Promise.all(
+      resultsData.map(async (resultData) => {
+        const {
+          student,
+          exam,
+          marksObtained,
+          class: studentClass,
+          subject,
+        } = resultData;
+
+        const existingResult = await Result.findOne({ student, subject });
+
+        if (existingResult) {
+          // Update existing result
+          existingResult.marksObtained = marksObtained;
+          await existingResult.save();
+          return existingResult;
+        } else {
+          // Create a new result
+          const newResult = new Result({
+            student,
+            exam,
+            marksObtained,
+            class: studentClass,
+            subject,
+          });
+          await newResult.save();
+          return newResult;
+        }
+      })
+    );
+
+    res.status(201).json(results);
   } catch (err) {
     if (
       err.name === "ValidationError" &&
