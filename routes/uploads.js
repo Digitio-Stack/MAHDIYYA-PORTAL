@@ -4,6 +4,7 @@ const { protect } = require("../controllers/authController");
 const multer = require("multer");
 const fs = require("fs");
 const { dirname } = require("path");
+const { deleteOne } = require("../utils/globalFuctions");
 
 const uploadSchema = new mongoose.Schema(
   {
@@ -79,14 +80,6 @@ router.get("/", protect, async (req, res, next) => {
   }
 });
 
-router.post("/:id", async (req, res, next) => {
-  try {
-    await Upload.findByIdAndDelete(req.params.id);
-    res.status(200).json({ deleted: true });
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-});
+router.post("/:id", deleteOne(Upload));
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Result = require("../models/resultModel");
 const Student = require("../models/studentModel");
+const { deleteOne } = require("../utils/globalFuctions");
 
 exports.getAllResults = async (req, res) => {
   try {
@@ -99,15 +100,58 @@ exports.getResults = async (req, res) => {
       })
         .populate("student")
         .populate("subject");
-
       if (results.length === 0) {
         return res.status(404).json({ message: "No results found" });
       }
+      const studentResults = {};
+      results.forEach((result) => {
+        const studentId = result.student._id.toString();
+        if (!studentResults[studentId]) {
+          studentResults[studentId] = {
+            student: result.student,
+            totalMarks: 0,
+            subjectResults: [],
+          };
+        }
+        studentResults[studentId].totalMarks += result.marksObtained;
+        studentResults[studentId].subjectResults.push({
+          subject: result.subject,
+          marksObtained: result.marksObtained,
+        });
+      });
+    
+      // Sort the students based on the total marks obtained
+      const sortedStudents = Object.values(studentResults).sort(
+        (a, b) => b.totalMarks - a.totalMarks
+      );
+    
+      const modifiedResults = sortedStudents.map((studentResult, index) => {
+        const totalMarks = studentResult.subjectResults.reduce(
+          (sum, subjectResult) => sum + subjectResult.subject.totalMarks,
+          0
+        );
+        const marksObtained = studentResult.totalMarks;
+        const percentage = (marksObtained / totalMarks) * 100;
+        const passed = studentResult.subjectResults.every(
+          (subjectResult) => subjectResult.marksObtained >= 40
+        );
 
-      return res.json({ results });
+        const rank = index + 1; // Assign rank based on the sorted order
+    
+        return {
+          student: studentResult.student,
+          subjectResults: studentResult.subjectResults,
+          passed,
+          failed: !passed,
+          percentage,
+          rank,
+          marksObtained,
+          totalMarks
+          // Add any other required fields here
+        };
+      });
+      return res.json(modifiedResults);
     }
-
-    return res.status(400).json({ message: "Invalid request" });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -160,19 +204,22 @@ exports.getGlobalResults = async (req, res) => {
       {
         $unwind: "$subjectInfo",
       },
+
       {
         $group: {
           _id: {
-            class: "$class_info.className",
-            branch: "$branch_info.branchName",
+            className: "$class_info.className",
+            class_id: "$class_info._id",
+            branchName: "$branch_info.branchName",
+            branch_id: "$branch_info._id",
             branchCode: "$branch_info.branchCode",
             subject: "$subjectInfo.subjectName",
+            examId: "$exam",
           },
           count: { $sum: 1 }, // Optionally, you can count the number of results for each group
         },
       },
     ]);
-    
 
     return res.status(200).json(data);
   } catch (err) {
@@ -245,12 +292,4 @@ exports.updateResult = async (req, res) => {
   }
 };
 
-exports.deleteResult = async (req, res) => {
-  try {
-    const result = await Result.findByIdAndDelete(req.params.id);
-    if (!result) return res.status(404).json({ message: "Result not found" });
-    res.json({ message: "Result deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+exports.deleteResult = deleteOne(Result);

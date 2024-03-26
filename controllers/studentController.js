@@ -177,14 +177,7 @@ exports.getAdmissionRequests = async (req, res, next) => {
     next(error);
   }
 };
-exports.deleteStudent = async (req, res, next) => {
-  try {
-    await Student.findByIdAndDelete(req.params.id);
-    res.status(200).json({ deleted: true });
-  } catch (error) {
-    next(error);
-  }
-};
+exports.deleteStudent = globalFunctions.deleteOne(Student)
 exports.excelUpload = async (req, res) => {
   try {
     // Read uploaded file

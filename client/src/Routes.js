@@ -1,4 +1,4 @@
-import { Branch, Student, Teacher, Users } from "./pages";
+import { Branch, Student, Teacher,  } from "./pages";
 import AdminHome from "./pages/AdminHome";
 import ViewTeacher from "./pages/ViewTeacher";
 import FileUpload from "./pages/admin/FileUpload";
@@ -18,6 +18,7 @@ import CreateNotification from "./pages/superAdmin/CreateNotification";
 import EditCourse from "./pages/superAdmin/EditCourse";
 import EditSubject from "./pages/superAdmin/EditSubject";
 import RecycleBin from "./pages/superAdmin/RecycleBin";
+import ResultView from "./pages/superAdmin/ResultView";
 import UploadedFiles from "./pages/superAdmin/UploadedFiles";
 
 export const SuperAdminRoutes = [
@@ -37,22 +38,14 @@ export const SuperAdminRoutes = [
     role: "superAdmin",
   },
 
-  {
-    route: "/edit-user/:id",
-    component: <Users.EditUser />,
-    role: "superAdmin",
-  },
+  
   {
     route: "/all-branch-students",
     component: <Branch.MahdiyyaStudents />,
     role: "superAdmin",
   },
 
-  {
-    route: "/all-branch-students/:id",
-    component: <Branch.BranchBasedDetails />,
-    role: "superAdmin",
-  },
+
   {
     route: "/all-subjects",
     component: <AllSubjects />,
@@ -70,7 +63,6 @@ export const SuperAdminRoutes = [
     role: "superAdmin",
   },
 
- 
   {
     route: "/admission-requests",
     component: <AdmissionRequests />,
@@ -126,12 +118,17 @@ export const SuperAdminRoutes = [
   {
     route: "/add-result",
     component: <AddResult />,
-    role:"superAdmin"
+    role: "superAdmin",
   },
   {
     route: "/trash",
     component: <RecycleBin />,
-    role:"superAdmin"
+    role: "superAdmin",
+  },
+  {
+    route: "/result-view/",
+    component: <ResultView />,
+    role: "superAdmin",
   },
 ];
 
@@ -190,7 +187,7 @@ export const AdminRoutes = [
     route: "/my-messages",
     component: <MyMessages />,
   },
- 
+
   {
     route: "/marks",
     component: <Marks />,

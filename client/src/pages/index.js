@@ -12,14 +12,12 @@ import AllTeachers from "./admin/teacher/AllTeachers.jsx";
 import CreateTeacher from "./admin/teacher/CreateTeacher.jsx";
 import EditTeacher from "./admin/teacher/EditTeacher.jsx";
 import Profile from "./student/StudentProfile.jsx";
-import MahdiyyaStudents from "./superAdmin/MahdiyyaStudents.jsx";
 import AllBranches from "./superAdmin/AllBranches";
-import AllUsers from "./superAdmin/AllUsers";
-import BranchBasedDetails from "./superAdmin/BranchBasedDetails";
 import BranchBasedTeachers from "./superAdmin/BranchBasedTeachers";
 import ClassBasedStudents from "./superAdmin/ClassBasedStudents.jsx";
 import CreateBranch from "./superAdmin/CreateBranch";
 import EditBranch from "./superAdmin/EditBranch";
+import MahdiyyaStudents from "./superAdmin/MahdiyyaStudents.jsx";
 
 export const Teacher = {
   EditTeacher,
@@ -48,8 +46,4 @@ export const Branch = {
   EditBranch,
   CreateBranch,
   MahdiyyaStudents,
-  BranchBasedDetails,
-};
-export const Users = {
-  AllUsers,
 };

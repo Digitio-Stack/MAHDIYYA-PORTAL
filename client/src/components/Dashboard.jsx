@@ -3,7 +3,7 @@ import {
   faBookOpenReader,
   faChalkboardUser,
   faCheckToSlot, faDownload,
-  faGraduationCap, faSchool, faToolbox, faUpload
+  faGraduationCap, faMarker, faSchool, faToolbox, faUpload
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
@@ -78,6 +78,11 @@ function Dashboard() {
       icon: faDownload,
       link: "/downloads",
     },
+    {
+      text: "RESULTS",
+      icon: faMarker,
+      link: "/result-view",
+    },
     
   ];
   const AdminItems = [
@@ -91,22 +96,6 @@ function Dashboard() {
       icon: faChalkboardUser,
       link: "/all-teachers",
     },
-
-    // {
-    //   text: "Admission Requests",
-    //   icon: faBook,
-    //   link: "/admissions",
-    // },
-    // {
-    //   text: "Transfers",
-    //   icon: faExchange,
-    //   link: "/transfers",
-    // },
-    // {
-    //   text: "Downloads",
-    //   icon: faDownload,
-    //   link: "/downloads",
-    // },
     {
       text: "Uploads",
       icon: faUpload,
@@ -142,8 +131,8 @@ function Dashboard() {
             <>
               <div className="px-4 py-8 m-auto mt-5 grid grid-cols-1 lg:grid-cols-4">
                 {SuperAdminItems.map((item, key) => (
-                  <Link to={item.link} key={key} className="w-full p-2">
-                    <div className=" py-4 overflow-hidden bg-gray-800 rounded-xl group  duration-300 shadow-2xl group">
+                  <Link to={item.link} key={key} className="w-full p-2 cursor-pointer">
+                    <div className=" py-4 overflow-hidden  cursor-pointer bg-gray-800 rounded-xl group  duration-300 shadow-2xl group">
                       <div className="flex">
                         <div className="px-4 py-4 bg-gray-300 group-hover:bg-gray-900 rounded-xl bg-opacity-30 mx-auto text-2xl">
                           <FontAwesomeIcon

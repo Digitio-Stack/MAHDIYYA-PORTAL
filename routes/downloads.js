@@ -3,6 +3,7 @@ const { default: mongoose } = require("mongoose");
 const multer = require("multer");
 const cloudinary = require("cloudinary");
 const dotenv = require("dotenv");
+const { deleteOne } = require("../utils/globalFuctions");
 
 dotenv.config();
 
@@ -67,14 +68,6 @@ router.get("/student", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
-  try {
-    let data = await Download.findByIdAndDelete(req.params.id);
-    // fs.unlinkSync(`./uploads/${data.fileName}`);
-    res.status(200).json({ deleted: true });
-  } catch (error) {
-    res.status(400).json(error);
-  }
-});
+router.delete("/:id", deleteOne(Download));
 
 module.exports = router;

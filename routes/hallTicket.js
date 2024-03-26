@@ -4,6 +4,7 @@ const HallTicket = require("../models/hallTicketModel");
 const Student = require("../models/studentModel");
 const Branch = require("../models/branchModel");
 const Class = require("../models/classModel");
+const { deleteOne } = require("../utils/globalFuctions");
 
 router.post("/", protect, restrictTo("superAdmin"), async (req, res) => {
   try {
@@ -33,14 +34,7 @@ router.get("/:id", async (req, res) => {
     res.status(400).json(error);
   }
 });
-router.delete("/:id", async (req, res) => {
-  try {
-    let data = await HallTicket.findByIdAndDelete(req.params.id);
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-});
+router.delete("/:id",deleteOne(HallTicket));
 router.post("/download", async (req, res) => {
   try {
     const student = await Student.findOne({

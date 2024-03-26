@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "../../../Axios";
 import { toast } from "react-toastify";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const AddResult = () => {
   const { pathname } = useLocation();
@@ -270,28 +270,34 @@ const AddResult = () => {
           </thead>
           <tbody>
             {results.map((resultGroup, key) => (
-              <tr
-                key={`${resultGroup._id.branch}-${resultGroup._id.class}`}
-                className="hover:bg-gray-100"
-              >
-                <td className="border border-gray-300 px-4 py-2">{key + 1}</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {resultGroup?._id?.branch}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {resultGroup?._id?.branchCode}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {resultGroup?._id?.class}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {resultGroup?._id?.subject}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {resultGroup?.count}
-                </td>
-                {/* Optionally, you can display additional data here */}
-              </tr>
+              <>
+                <tr
+                  key={`${resultGroup._id.branch_id}-${resultGroup._id.class_id}`}
+                  className="hover:bg-gray-100"
+                >
+                  <td className="border border-gray-300 px-4 py-2">
+                    {key + 1}
+                  </td>
+
+                  <td className="border border-gray-300 px-4 py-2">
+                    {resultGroup?._id?.branchName}
+                  </td>
+
+                  <td className="border border-gray-300 px-4 py-2">
+                    {resultGroup?._id?.branchCode}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {resultGroup?._id?.className}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {resultGroup?._id?.subject}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {resultGroup?.count}
+                  </td>
+                  {/* Optionally, you can display additional data here */}
+                </tr>
+              </>
             ))}
           </tbody>
         </table>

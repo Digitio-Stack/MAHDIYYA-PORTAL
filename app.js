@@ -23,7 +23,6 @@ const resultRoute = require("./routes/result");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const path = require("path");
-const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const compression = require("compression");
@@ -37,11 +36,7 @@ app.use(
 );
 
 app.enable("trust proxy");
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000, //100 requests in one hour,
-  message: "Too many requests, please try again after one hour",
-});
+
 // view engine setup
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));

@@ -111,18 +111,7 @@ exports.getUser = async (req, res) => {
   }
 };
 
-exports.deleteUser = async (req, res) => {
-  try {
-    await Auth.findByIdAndDelete(req.params.id);
-    res.status(200).json({
-      message: "User deleted",
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Error deleting user",
-    });
-  }
-};
+exports.deleteUser = globalFunctions.deleteOne(Auth)
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   if (!req.body.currentPassword) {
