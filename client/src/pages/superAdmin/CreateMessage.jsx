@@ -4,7 +4,7 @@ import { useState } from "react";
 import Axios from "../../Axios";
 import { toast } from "react-toastify";
 import MessageTable from "../../components/MessageTable";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function CreateMessage() {
@@ -91,86 +91,73 @@ function CreateMessage() {
   }, []);
   return (
     <div>
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form className="bg-white shadow-md rounded max-w-2xl mx-auto my-7 px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="message"
+            htmlFor="title"
           >
             Title
           </label>
           <input
-            className="shadow appearance-none border border-indigo-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="message"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="title"
             placeholder="Message Title"
-            defaultValue={""}
+            defaultValue=""
             onChange={(e) => setTitle(e.target.value)}
             value={title}
             required
           />
         </div>
-        <div className="mb-4">
-          <div>
-            <label
-              htmlFor="countries"
-              className="block mb-2 text-sm font-medium text-blue-900 dark:text-white"
-            >
-              Messages To All Study Centres
-            </label>
-            <input type={"checkbox"} onClick={() => handleSetAll()} />
-          </div>
+        <div className="mb-4  flex">
+          <label className="block mb-2 text-sm font-medium mr-4 text-blue-900 dark:text-white">
+            Messages To All Study Centres
+          </label>
+          <input type="checkbox" onClick={() => handleSetAll()} />
         </div>
         {!forAll && (
-          <>
-            <div className="mb-4">
-              <div>
-                <label
-                  htmlFor="countries"
-                  className="block mb-2 text-sm font-medium text-blue-900 dark:text-white"
-                >
-                  Select a recipient
-                </label>
-                <select
-                  id="countries"
-                  onChange={(e) => handleSelectChange(e)}
-                  className="bg-gray-50 border border-gray-300 text-blue-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                >
-                  <option hidden>Choose one</option>
-                  {users
-                    .sort((a, b) => (a.username > b.username ? 1 : -1))
-                    .map((user, key) => (
-                      <option key={key} value={user._id}>
-                       {user?.branch?.branchName} , {user.username}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            </div>
-          </>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-blue-900 dark:text-white">
+              Select a recipient
+            </label>
+            <select
+              id="recipient"
+              onChange={(e) => handleSelectChange(e)}
+              className="bg-gray-50 border rounded-lg focus:ring focus:border-blue-500 block w-full p-2.5"
+              required
+            >
+              <option hidden>Choose one</option>
+              {users
+                .sort((a, b) => (a.username > b.username ? 1 : -1))
+                .map((user, key) => (
+                  <option key={key} value={user._id}>
+                    {user?.branch?.studyCentreName}, {user.username}
+                  </option>
+                ))}
+            </select>
+          </div>
         )}
-
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="message"
+            htmlFor="link"
           >
             Link
           </label>
           <input
-            className="shadow appearance-none border border-indigo-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="message"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="link"
             placeholder="Link here"
-            defaultValue={""}
+            defaultValue=""
             onChange={(e) => setLink(e.target.value)}
             value={link}
             required
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           {loading ? (
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              processing...
+              Processing...
             </button>
           ) : (
             <button
@@ -182,30 +169,37 @@ function CreateMessage() {
             </button>
           )}
         </div>
-        <div className="mb-4">
-          <div>
-            <label
-              htmlFor="countries"
-              className="block mb-2 text-sm font-medium text-blue-900 dark:text-white"
-            >
-              Selected Recipients
-            </label>
-            <div className="grid lg:grid-cols-3">
+        <div>
+          <label className="block mb-2 text-sm font-medium text-blue-900 dark:text-white">
+            Selected Recipients
+          </label>
+          {forAll ? (
+            <h1 className="font-semibold text-red-600 uppercase">
+              Message will be delivered to all
+            </h1>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
               {filteredUsers.map((item) => (
-                <div className="bg-gray-200  m-1 px-2 py-1 shadow-md">
-                  {item?.branch?.branchName} ,{item.username}
+                <div
+                  key={item._id}
+                  className="bg-gray-200 rounded-lg p-2 shadow-md flex flex-col items-center justify-between"
+                >
+                  <span className="text-center font-serif">
+                    {item?.branch?.studyCentreName}, {item.username}
+                  </span>
                   <span
-                    className="pl-2 text-red-500 cursor-pointer"
+                    className="text-red-500 cursor-pointer"
                     onClick={() => removeSelected(item._id)}
                   >
-                    <FontAwesomeIcon icon={faClose} />
+                    Remove
                   </span>
                 </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
       </form>
+
       <MessageTable messages={messages} getMessages={getMessages} />
     </div>
   );

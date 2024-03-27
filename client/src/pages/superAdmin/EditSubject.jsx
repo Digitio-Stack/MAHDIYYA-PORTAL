@@ -30,7 +30,7 @@ function EditSubject() {
       });
       if (res.status === 200) {
         setFormData({ name: "", deadline: "", type: "" });
-        toast.success("schedule successfully added", {
+        toast.success("Subject successfully edited", {
           autoClose: 3000,
           position: toast.POSITION.TOP_CENTER,
         });

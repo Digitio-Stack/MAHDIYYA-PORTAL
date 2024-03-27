@@ -29,56 +29,44 @@ function MessageTable({ messages, getMessages }) {
   };
 
   return (
-    <table class="table-auto w-full text-center bg-white shadow-md rounded-lg">
-      <thead class="bg-gray-300">
+    <table className="w-2xl mx-auto  text-center bg-white shadow-md rounded-lg">
+      <thead className="bg-gray-300">
         <tr>
-          <th class="px-4 py-2">#</th>
-          <th class="px-4 py-2">title</th>
-          <th class="px-4 py-2">recipients</th>
-          <th class="px-4 py-2">link</th>
-          <th class="px-4 py-2">Actions</th>
+          <th className="px-4 py-2 text-sm font-normal">#</th>
+          <th className="px-4 py-2 text-sm font-normal">Title</th>
+          <th className="px-4 py-2 text-sm font-normal">Recipients</th>
+          <th className="px-4 py-2 text-sm font-normal">Link</th>
+          <th className="px-4 py-2 text-sm font-normal">Actions</th>
         </tr>
       </thead>
       <tbody>
-        {messages.map((message, key) => (
-          <tr key={message._id} className="border border-t-1 border-gray-600">
-            <td class="px-4 py-2 ">{key + 1}</td>
-            <td class="px-4 py-2">{message.title}</td>
-            {showMore === key ? (
-              <>
-                <div class="grid grid-cols-3">
-                  {message?.recipients?.map((item) => (
-                    <div className="bg-gray-200 m-1">{item.user.username}</div>
-                  ))}
-                </div>
-                <button
-                  className="text-center"
-                  onClick={() => handleExpandRow(key)}
-                >
-                  show less
-                </button>
-              </>
-            ) : (
-              <button
-                className="text-center"
-                onClick={() => handleExpandRow(key)}
-              >
-                show details
-              </button>
-            )}
-            <td class="px-4 py-2">
+        {messages.map((message, index) => (
+          <tr key={message._id} className="">
+            <td className="px-4 py-2">{index + 1}</td>
+            <td className="px-4 py-2">{message.title}</td>
+            <td className="px-4 py-2">
+              <div className="grid grid-cols-3 gap-1">
+                {message?.recipients?.map((item, idx) => (
+                  <p key={idx} className="bg-gray-200 text-center m-1 p-2 rounded-lg">
+                    {item.user.username}
+                  </p>
+                ))}
+              </div>
+            </td>
+            <td className="px-4 py-2">
               <a
                 href={message.link}
-                target={"_blank"}
-                className="text-blue-500"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-100 px-3 py-1 uppercase bg-gray-600  underline"
               >
-                view
+                View
               </a>
             </td>
-            <td class="px-4 py-2">
+            <td className="px-4 py-2">
               <button
                 onClick={(e) => handleDelete(e, message._id)}
-                class=" text-red-400 py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+                className="text-red-500  bg-gray-300 px-3 py-1 uppercase"
               >
                 Delete
               </button>

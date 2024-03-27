@@ -1,50 +1,47 @@
-import { Branch, Student, Teacher,  } from "./pages";
+import { Course, Result, Student, StudyCentre, Teacher } from "./pages";
 import AdminHome from "./pages/AdminHome";
 import ViewTeacher from "./pages/ViewTeacher";
 import FileUpload from "./pages/admin/FileUpload";
 import MyMessages from "./pages/admin/MyMessages";
 import MyUploads from "./pages/admin/MyUploads";
 import Admissions from "./pages/admin/admission/Admissions";
-import Marks from "./pages/admin/marks/Marks";
-import AddResult from "./pages/admin/result/AddResult";
 import AdmissionRequests from "./pages/superAdmin/AdmissionRequests";
 import AllSubjects from "./pages/superAdmin/AllSubjects";
 import ClassManagment from "./pages/superAdmin/ClassManagment";
-import CourseStudents from "./pages/superAdmin/CourseStudents";
-import CreateCourse from "./pages/superAdmin/CreateCourse";
 import CreateExam from "./pages/superAdmin/CreateExam";
 import CreateMessage from "./pages/superAdmin/CreateMessage";
-import CreateNotification from "./pages/superAdmin/CreateNotification";
-import EditCourse from "./pages/superAdmin/EditCourse";
 import EditSubject from "./pages/superAdmin/EditSubject";
 import RecycleBin from "./pages/superAdmin/RecycleBin";
-import ResultView from "./pages/superAdmin/ResultView";
 import UploadedFiles from "./pages/superAdmin/UploadedFiles";
+import CreateNotification from "./pages/superAdmin/notification/CreateNotification";
 
 export const SuperAdminRoutes = [
   {
-    route: "/create-branch",
-    component: <Branch.CreateBranch />,
+    route: "/create-study-centre",
+    component: <StudyCentre.CreateStudyCentre />,
     role: "superAdmin",
   },
   {
-    route: "/all-branches",
-    component: <Branch.AllBranches />,
+    route: "/study-centres",
+    component: <StudyCentre.AllStudyCentres />,
+    role: "superAdmin",
+  },
+  {
+    route: "/study-centre-section",
+    component: <StudyCentre.StudyCentreHome />,
     role: "superAdmin",
   },
   {
     route: "/edit-branch/:id",
-    component: <Branch.EditBranch />,
+    component: <StudyCentre.EditBranch />,
     role: "superAdmin",
   },
 
-  
   {
-    route: "/all-branch-students",
-    component: <Branch.MahdiyyaStudents />,
+    route: "/all-centre-students",
+    component: <StudyCentre.MahdiyyaStudents />,
     role: "superAdmin",
   },
-
 
   {
     route: "/all-subjects",
@@ -76,17 +73,17 @@ export const SuperAdminRoutes = [
   },
   {
     route: "/create-course",
-    component: <CreateCourse />,
+    component: <Course.CreateCourse />,
     role: "superAdmin",
   },
   {
     route: "/edit-course/:id",
-    component: <EditCourse />,
+    component: <Course.EditCourse />,
     role: "superAdmin",
   },
   {
     route: "/all-courses",
-    component: <CreateCourse />,
+    component: <Course.AllCourses />,
     role: "superAdmin",
   },
   {
@@ -105,19 +102,10 @@ export const SuperAdminRoutes = [
     component: <UploadedFiles />,
     role: "superAdmin",
   },
-  {
-    route: "/course-students/:id",
-    component: <CourseStudents />,
-    role: "superAdmin",
-  },
+
   {
     route: "/create-messages",
     component: <CreateMessage />,
-    role: "superAdmin",
-  },
-  {
-    route: "/add-result",
-    component: <AddResult />,
     role: "superAdmin",
   },
   {
@@ -125,9 +113,25 @@ export const SuperAdminRoutes = [
     component: <RecycleBin />,
     role: "superAdmin",
   },
+
   {
-    route: "/result-view/",
-    component: <ResultView />,
+    route: "/add-result",
+    component: <Result.AddResult />,
+    role: "superAdmin",
+  },
+  {
+    route: "/result-section/",
+    component: <Result.ResultHome />,
+    role: "superAdmin",
+  },
+  {
+    route: "/edit-result/",
+    component: <Result.EditResult />,
+    role: "superAdmin",
+  },
+  {
+    route: "/study-centre/:centreId",
+    component: <StudyCentre.StudyCentreView />,
     role: "superAdmin",
   },
 ];
@@ -187,9 +191,8 @@ export const AdminRoutes = [
     route: "/my-messages",
     component: <MyMessages />,
   },
-
   {
-    route: "/marks",
-    component: <Marks />,
+    route: "/result-view/",
+    component: <Result.ResultView />,
   },
 ];

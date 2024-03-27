@@ -75,8 +75,8 @@ function UploadedFiles() {
                 >
                   {upload?.referenceId?.title}
                 </th>
-                <td className="py-4 px-6">{upload?.uploadedBy?.branchName}</td>
-                <td className="py-4 px-6">{upload?.uploadedBy?.branchCode}</td>
+                <td className="py-4 px-6">{upload?.uploadedBy?.studyCentreName}</td>
+                <td className="py-4 px-6">{upload?.uploadedBy?.studyCentreCode}</td>
 
                 <td className="py-4 px-6">
                   <a

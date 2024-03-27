@@ -68,7 +68,7 @@ function SelectedBranch({
 
   const getAllBranches = async () => {
     try {
-      let { data } = await Axios.get(`/branch?district=${selectedBranch}`);
+      let { data } = await Axios.get(`/study-centre?district=${selectedBranch}`);
       setBranches(data.docs);
     } catch (error) {
       console.log(error.response);
@@ -142,7 +142,7 @@ function SelectedBranch({
                     setFormData({ ...formData, branch: branch._id })
                   }
                 >
-                  {branch.branchName}, {branch?.place}
+                  {branch.studyCentreName}, {branch?.place}
                 </div>
               ))}
             </div>

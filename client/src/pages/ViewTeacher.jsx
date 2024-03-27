@@ -51,7 +51,7 @@ function ViewTeacher() {
             <li className="flex items-center py-3">
               <span className="ml-auto">
                 <span className=" py-1 px-2 rounded text-blue-900 text-sm">
-                  {teacher?.branch?.branchName}
+                  {teacher?.branch?.studyCentreName}
                 </span>
               </span>
             </li>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { UserAuthContext } from "./context/user";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Outlet } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 
 function ProtectedRoutes({ children }) {

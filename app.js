@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const studentRoutes = require("./routes/student");
-const branchRoutes = require("./routes/branch");
+const studyCentreRoutes = require("./routes/study-centre");
 const teacherRoutes = require("./routes/teacher");
 const dutyRoutes = require("./routes/duty");
 const notificationRoutes = require("./routes/notification");
@@ -55,7 +55,7 @@ app.use(express.static("uploads"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/student", studentRoutes);
-app.use("/api/branch", branchRoutes);
+app.use("/api/study-centre", studyCentreRoutes);
 app.use("/api/teacher", teacherRoutes);
 app.use("/api/duty", dutyRoutes);
 app.use("/api/notification", notificationRoutes);

@@ -22,6 +22,9 @@ const uploadSchema = new mongoose.Schema(
       required: true,
       ref: "Download",
     },
+    remarks: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -58,7 +61,7 @@ router.get("/:referenceId", protect, async (req, res, next) => {
     let data = await Upload.find({
       referenceId: req.params.referenceId,
     })
-      .populate("uploadedBy", "branchName branchCode")
+      .populate("uploadedBy", "studyCentreName studyCentreCode")
       .populate("referenceId")
       .sort({ createdAt: -1 });
 

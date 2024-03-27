@@ -17,7 +17,7 @@ router.get(
   studentController.getMyStudents
 );
 router.get(
-  "/data/:branchId/:classId",
+  "/data/:studyCentreId/:classId",
   protect,
   restrictTo("superAdmin"),
   studentController.getBranchStudents

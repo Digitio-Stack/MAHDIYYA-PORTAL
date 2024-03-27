@@ -1,18 +1,16 @@
 import {
-  faAdd,
   faBars,
   faBell,
   faBookOpen,
-  faClock,
+  faBookOpenReader,
+  faBuildingCircleArrowRight,
   faClose,
   faHome,
   faMarker,
   faMessage,
   faPersonChalkboard,
-  faPlus,
   faPowerOff,
   faRecycle,
-  faSchool,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -38,8 +36,8 @@ function Sidebar() {
     },
 
     {
-      name: "Marks",
-      route: "/marks",
+      name: "Results",
+      route: "/result-view",
       icon: faBookOpen,
     },
   ];
@@ -49,20 +47,21 @@ function Sidebar() {
       route: "/admin",
       icon: faHome,
     },
-    {
-      name: "Add Study Center",
-      route: "/create-branch",
-      icon: faPlus,
-    },
+   
     {
       name: "Study Centers",
-      route: "/all-branches",
-      icon: faSchool,
+      route: "/study-centre-section",
+      icon: faBuildingCircleArrowRight,
+    },
+    {
+      name: "Students",
+      route: "/all-centre-students",
+      icon: faBookOpenReader,
     },
     {
       name: "Create Course",
       route: "/create-course",
-      icon: faClock,
+      icon: faBookOpen,
     },
     {
       name: "Create Notification",
@@ -76,7 +75,7 @@ function Sidebar() {
     },
     {
       name: "Result Management",
-      route: "/add-result",
+      route: "/result-section",
       icon: faMarker,
     },
     {
@@ -215,18 +214,7 @@ function Sidebar() {
               {/* <span className="text-white ml-2 bg-red-500 px-2 rounded-full">{unreadMessages}</span> */}
             </NavLink>
           )}
-          <a
-            href="/add-student"
-            target={"_blank"}
-            className={
-              "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300  cursor-pointer hover:bg-blue-600 text-white"
-            }
-          >
-            <FontAwesomeIcon icon={faAdd} />
-            <span className="text-[15px] ml-4 text-gray-200 font-bold">
-              new admission
-            </span>
-          </a>
+          
         </div>
       </div>
     </>

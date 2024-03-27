@@ -38,4 +38,5 @@ resultSchema.path("student").validate(async function (value) {
 }, "Duplicate mark entry for the subject.");
 
 const Result = mongoose.model("Result", resultSchema);
+
 module.exports = Result;

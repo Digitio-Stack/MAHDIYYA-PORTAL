@@ -126,7 +126,7 @@ function HallTicket() {
                         <p className="text-[13px]">
                           Name of the institution:{" "}
                           <span className="text-black font-semibold font-sans text-[11px]">
-                            {data?.data?.branchName}
+                            {data?.data?.studyCentreName}
                           </span>
                         </p>
 

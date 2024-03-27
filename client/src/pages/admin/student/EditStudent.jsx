@@ -8,6 +8,7 @@ function EditStudent() {
   const { id } = useParams();
   const initialState = {
     studentName: "",
+    registerNo: "",
     fatherName: "",
     motherName: "",
     houseName: "",
@@ -98,6 +99,25 @@ function EditStudent() {
                   placeholder="Student Name"
                   name="studentName"
                   value={formData.studentName}
+                />
+              </div>
+            </div>
+            <div className="lg:col-span-1 mt-4 ">
+              <div className="px-4 sm:px-0">
+                <label
+                  className="block  text-sm font-bold mb-2"
+                  htmlFor="username"
+                >
+                  Register Number
+                </label>
+                <input
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-3"
+                  type="text"
+                  onChange={(e) => onChange(e)}
+                  required
+                  placeholder="Register No"
+                  name="registerNo"
+                  value={formData.registerNo}
                 />
               </div>
             </div>

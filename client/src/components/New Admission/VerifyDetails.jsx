@@ -45,8 +45,8 @@ function VerifyDetails({
     },
   ];
   const getBranch = async () => {
-    let { data } = await Axios.get("/branch/" + formData.branch);
-    setBranch(data.branchName);
+    let { data } = await Axios.get("/study-centre/" + formData.branch);
+    setBranch(data.studyCentreName);
   };
 
   useEffect(() => {

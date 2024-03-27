@@ -3,18 +3,12 @@ const Result = require("../models/resultModel");
 const Student = require("../models/studentModel");
 const { deleteOne } = require("../utils/globalFuctions");
 
-exports.getAllResults = async (req, res) => {
-  try {
-    const results = await Result.find().populate("student").populate("exam");
-    res.json(results);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
 exports.getMyResults = async (req, res) => {
   try {
-    let student = await Student.findOne({ registerNo: req.params.registerNo });
+    let student = await Student.findOne({ registerNo: req.params.registerNo })
+      .populate("branch")
+      .populate("class");
+
     let results = await Result.find({
       student: student._id,
     })
@@ -41,6 +35,46 @@ exports.getMyResults = async (req, res) => {
     // Calculate percentage
     const percentage = (grandTotal / totalPossibleMarks) * 100;
     const roundedPercentage = Math.floor(percentage);
+    // Rank const studentClassId = student.class;
+
+    // Find all students in the same class
+    const classmates = await Student.find({
+      class: student.class,
+      branch: student.branch,
+    });
+
+    // Calculate grand total for each student
+    const grandTotals = await Promise.all(
+      classmates.map(async (classmate) => {
+        const classmateResults = await Result.find({ student: classmate._id });
+        return classmateResults.reduce(
+          (total, result) => total + result.marksObtained,
+          0
+        );
+      })
+    );
+
+    // Sort classmates by grand total in descending order
+    const sortedClassmates = classmates
+      .map((classmate, index) => ({
+        classmate,
+        grandTotal: grandTotals[index],
+      }))
+      .sort((a, b) => b.grandTotal - a.grandTotal);
+
+    // Find the rank of the current student
+    let studentRank = 1;
+    let prevGrandTotal = Infinity;
+    for (const { classmate, grandTotal } of sortedClassmates) {
+      if (grandTotal < prevGrandTotal) {
+        studentRank += 1;
+        prevGrandTotal = grandTotal;
+      }
+
+      if (classmate._id.equals(student._id)) {
+        break;
+      }
+    }
 
     return res.json({
       results,
@@ -48,6 +82,8 @@ exports.getMyResults = async (req, res) => {
       grandTotal,
       percentage: roundedPercentage,
       totalPossibleMarks,
+      studentRank: studentRank - 1,
+      student,
     });
   } catch (err) {
     console.error(err);
@@ -57,49 +93,14 @@ exports.getMyResults = async (req, res) => {
 exports.getResults = async (req, res) => {
   try {
     let results;
-
-    // Check if the 'studentId' query parameter is present
-    if (req.query.studentId) {
-      results = await Result.find({
-        student: mongoose.Types.ObjectId(req.query.studentId),
-      })
-        .populate("student")
-        .populate("subject")
-        .populate("exam");
-
-      if (results.length === 0) {
-        return res.status(200).json({ message: "Result Not Found" });
-      }
-
-      const allSubjectsPassed = results.every(
-        (result) => result.marksObtained >= 40
-      );
-      const grandTotal = results.reduce(
-        (total, result) => total + result.marksObtained,
-        0
-      );
-
-      // Calculate total possible marks (assuming each subject has a maximum of 100 marks)
-      const totalPossibleMarks = results.length * 100;
-
-      // Calculate percentage
-      const percentage = (grandTotal / totalPossibleMarks) * 100;
-      const roundedPercentage = Math.floor(percentage);
-
-      return res.json({
-        results,
-        status: allSubjectsPassed ? "Promoted" : "Not promoted",
-        grandTotal,
-        percentage: roundedPercentage,
-        totalPossibleMarks,
-      });
-    } else if (req.query.classId && req.query.examId) {
+    if (req.query.classId && req.query.examId) {
       results = await Result.find({
         class: mongoose.Types.ObjectId(req.query.classId),
         exam: mongoose.Types.ObjectId(req.query.examId),
       })
         .populate("student")
         .populate("subject");
+
       if (results.length === 0) {
         return res.status(404).json({ message: "No results found" });
       }
@@ -119,13 +120,19 @@ exports.getResults = async (req, res) => {
           marksObtained: result.marksObtained,
         });
       });
-    
+
       // Sort the students based on the total marks obtained
       const sortedStudents = Object.values(studentResults).sort(
         (a, b) => b.totalMarks - a.totalMarks
       );
-    
-      const modifiedResults = sortedStudents.map((studentResult, index) => {
+
+      const filteredStudents = sortedStudents.filter(
+        (studentResult) =>
+          studentResult.student.branch._id.toString() ===
+          req.query.studyCentreId
+      );
+
+      const modifiedResults = filteredStudents.map((studentResult, index) => {
         const totalMarks = studentResult.subjectResults.reduce(
           (sum, subjectResult) => sum + subjectResult.subject.totalMarks,
           0
@@ -137,7 +144,7 @@ exports.getResults = async (req, res) => {
         );
 
         const rank = index + 1; // Assign rank based on the sorted order
-    
+
         return {
           student: studentResult.student,
           subjectResults: studentResult.subjectResults,
@@ -146,7 +153,7 @@ exports.getResults = async (req, res) => {
           percentage,
           rank,
           marksObtained,
-          totalMarks
+          totalMarks,
           // Add any other required fields here
         };
       });
@@ -157,6 +164,7 @@ exports.getResults = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 exports.getGlobalResults = async (req, res) => {
   try {
     let data = await Result.aggregate([
@@ -210,9 +218,9 @@ exports.getGlobalResults = async (req, res) => {
           _id: {
             className: "$class_info.className",
             class_id: "$class_info._id",
-            branchName: "$branch_info.branchName",
+            studyCentreName: "$branch_info.studyCentreName",
             branch_id: "$branch_info._id",
-            branchCode: "$branch_info.branchCode",
+            studyCentreCode: "$branch_info.studyCentreCode",
             subject: "$subjectInfo.subjectName",
             examId: "$exam",
           },
@@ -280,13 +288,102 @@ exports.createResults = async (req, res) => {
 
 exports.updateResult = async (req, res) => {
   try {
-    const result = await Result.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+    const results = await Promise.all(
+      req.body.map(async (resultData) => {
+        const { _id, marksObtained } = resultData;
+
+        let updated = await Result.findByIdAndUpdate(
+          _id,
+          { marksObtained },
+          { new: true }
+        );
+      })
+    );
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+};
+exports.fetchToUpdate = async (req, res) => {
+  try {
+    let { examId, subjectId, classId } = req.query;
+
+    const result = await Result.find({
+      exam: mongoose.Types.ObjectId(examId),
+      subject: mongoose.Types.ObjectId(subjectId),
+      class: mongoose.Types.ObjectId(classId),
     })
       .populate("student")
       .populate("exam");
     if (!result) return res.status(404).json({ message: "Result not found" });
     res.json(result);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+exports.getExamStatistics = async (req, res) => {
+  try {
+    const result = await Result.aggregate([
+      {
+        $match: { exam: mongoose.Types.ObjectId(req.query.examId) },
+      },
+      {
+        $lookup: {
+          from: "subjects",
+          localField: "subject",
+          foreignField: "_id",
+          as: "subjectDetails",
+        },
+      },
+      {
+        $unwind: "$subjectDetails",
+      },
+      {
+        $group: {
+          _id: {
+            subjectId: "$subject",
+            subjectName: "$subjectDetails.subjectName",
+          },
+          passed: {
+            $sum: {
+              $cond: {
+                if: {
+                  $gte: ["$marksObtained", 40],
+                },
+                then: 1,
+                else: 0,
+              },
+            },
+          },
+          failed: {
+            $sum: {
+              $cond: {
+                if: {
+                  $lt: ["$marksObtained", 40],
+                },
+                then: 1,
+                else: 0,
+              },
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          subjectId: "$_id.subjectId",
+          subjectName: "$_id.subjectName",
+          passed: 1,
+          failed: 1,
+        },
+      },
+    ]);
+    // Extract the aggregated data
+    if (!result) return res.status(404).json({ message: "Result not found" });
+    const examStatistics = result;
+
+    res.json(examStatistics);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

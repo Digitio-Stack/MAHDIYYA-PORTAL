@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Axios from "../Axios";
 import { UserAuthContext } from "../context/user";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function Downloads() {
   const { authData } = useContext(UserAuthContext);
@@ -45,7 +47,7 @@ function Downloads() {
   formData.append("title", title);
   formData.append("type", type);
   const fileUpload = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     try {
       if (!title || !type || !file) {
@@ -157,43 +159,38 @@ function Downloads() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {downloads.map((download, key) => (
           <div
-            className="bg-gradient-to-br from-teal-700 to-teal-600 cursor-pointer hover:from-teal-600 hover:to-teal-700 shadow-xl rounded-lg p-6 text-teal-800 "
+            className="bg-gray-900 shadow-xl rounded-lg p-6 text-gray-800 "
             key={key}
           >
-            <p
-              className={`w-fit mb-3 text-sm px-2 rounded-xl ${
-                download.type === "admin"
-                  ? "bg-blue-900 text-white"
-                  : "bg-white"
-              }`}
-            >
-              {download.type}
-            </p>
-            <a
-              target="_blank"
-              href={`${download.fileName}`}
-              className="text-lg mb-4 text-white hover:text-blue-700"
-            >
-              {download.title}
-            </a>
-
-            <div className="flex items-center justify-between">
-              <a
-                target="_blank"
-                href={`${download.fileName}`}
-                className="bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 font-semibold rounded-full transition duration-300 ease-in-out"
-              >
-                Download
-              </a>
+            <div className="flex  items-center justify-between">
+              <p className={`w-fit mb-3 text-sm   uppercase`}>
+                {download.type}
+              </p>
               {authData?.role === "superAdmin" && (
                 <button
                   onClick={(e) => deleteFile(e, download._id)}
                   className=" text-red-400 hover:text-red-600 hover:underline px-4 py-2 rounded-full transition duration-300 ease-in-out"
                 >
-                  Delete
+                  <FontAwesomeIcon icon={faTrash} />
                 </button>
               )}
             </div>
+
+            <a
+              target="_blank"
+              href={`${download.fileName}`}
+              className="text-lg mb-4 text-gray-300 hover:text-gray-400"
+            >
+              {download.title}
+            </a>
+
+            <a
+              target="_blank"
+              className="bg-gray-700 px-3 py-1 text-gray-300 hover:text-white hover:bg-gray-800"
+              href={`${download.fileName}`}
+            >
+              Download
+            </a>
           </div>
         ))}
       </div>

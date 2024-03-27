@@ -28,7 +28,7 @@ function AllClasses() {
   return (
     <>
       <h1 className="text-gray-800 font-bold text-3xl mt-4 text-center">
-        {authData?.branch.branchName}
+        {authData?.branch.studyCentreName}
       </h1>
       <Link to={`/new-student`}>
         <button className="px-4 py-2 bg-blue-900 text-white font-semibold ml-4 hover:bg-blue-800">New Student </button>

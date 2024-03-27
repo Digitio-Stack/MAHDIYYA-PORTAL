@@ -2,6 +2,7 @@ import {
   faBook,
   faBookOpenReader,
   faChalkboardUser,
+  faCheckDouble,
   faCheckToSlot, faDownload,
   faGraduationCap, faMarker, faSchool, faToolbox, faUpload
 } from "@fortawesome/free-solid-svg-icons";
@@ -29,7 +30,7 @@ function Dashboard() {
 
   const getBranch = async () => {
     try {
-      let { data } = await Axios.get("/branch/" + authData.branch?._id);
+      let { data } = await Axios.get("/study-centre/" + authData.branch?._id);
       setBranch(data);
     } catch (error) {
       console.log(error);
@@ -40,12 +41,12 @@ function Dashboard() {
     {
       text: "STUDY CENTERS",
       icon: faSchool,
-      link: "/all-branches",
+      link: "/study-centre-section",
     },
     {
       text: "STUDENTS",
       icon: faGraduationCap,
-      link: "/all-branch-students",
+      link: "/all-centre-students",
     },
     {
       text: "SUBJECTS",
@@ -81,7 +82,7 @@ function Dashboard() {
     {
       text: "RESULTS",
       icon: faMarker,
-      link: "/result-view",
+      link: "/result-section",
     },
     
   ];
@@ -106,6 +107,11 @@ function Dashboard() {
       icon: faBook,
       link: "/new-admissions",
     },
+    {
+      text: "Exam Results",
+      icon: faCheckDouble,
+      link: "/result-view",
+    },
   ];
 
   useEffect(() => {
@@ -121,7 +127,7 @@ function Dashboard() {
           
               <div className="bg-gray-900 w-full items-center">
                 <h1 className="text-white lg:my-[80px]  text-center font-bold text-3xl">
-                  {branch?.branchName}
+                  {branch?.studyCentreName}
                 </h1>
               </div>
             </div>

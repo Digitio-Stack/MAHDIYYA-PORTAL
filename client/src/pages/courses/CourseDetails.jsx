@@ -1,14 +1,11 @@
+import "draft-js/dist/Draft.css";
 import React, { useEffect, useState } from "react";
-import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Axios from "../../Axios";
-import { CourseAccountContext } from "../../context/courseAccount";
-import "draft-js/dist/Draft.css";
 
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
-  const { courseAccount } = useContext(CourseAccountContext);
   const navigate = useNavigate();
 
   const getCourseDetails = async () => {
@@ -20,21 +17,7 @@ function CourseDetails() {
     }
   };
 
-  const applyCourse = async (e) => {
-    e.preventDefault();
-    try {
-      let res = await Axios.post(`/course/apply/${id}`, {
-        student: courseAccount?._id,
-      });
-
-      alert("Course Application successful");
-      navigate("/my-courses");
-      getCourseDetails();
-    } catch (error) {
-      alert("something went wrong");
-      console.log(error.response);
-    }
-  };
+  
   useEffect(() => {
     getCourseDetails();
   }, [id]);
@@ -74,31 +57,7 @@ function CourseDetails() {
       <h4 className="text-lg font-semibold my-4 uppercase">course details</h4>
       <div dangerouslySetInnerHTML={{ __html: course?.details }}></div>
 
-      {!courseAccount ? (
-        <a
-          href="/student-login"
-          className="bg-green-500  capitalize hover:bg-green-300 text-white py-3 px-6 rounded-[30px]"
-        >
-          login to get the course
-        </a>
-      ) : (
-        <>
-          {courseAccount?.courses?.includes(course?._id) ? (
-            <button className="bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded-full">
-              You Already Applied
-            </button>
-          ) : (
-            <>
-              <button
-                onClick={(e) => applyCourse(e)}
-                className="bg-[#042336] text-white font-bold py-2 px-4 rounded-full hover:bg-gray-600"
-              >
-                Apply Now
-              </button>
-            </>
-          )}
-        </>
-      )}
+      
     </article>
   );
 }

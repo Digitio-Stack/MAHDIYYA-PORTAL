@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { protect, restrictTo } = require("../controllers/authController");
 const HallTicket = require("../models/hallTicketModel");
 const Student = require("../models/studentModel");
-const Branch = require("../models/branchModel");
+const Branch = require("../models/studyCentreModel");
 const Class = require("../models/classModel");
 const { deleteOne } = require("../utils/globalFuctions");
 
@@ -46,10 +46,10 @@ router.post("/download", async (req, res) => {
     }
 
     // Extract all the unique branch codes from the student data
-    const branchCodes = [student.branchCode];
+    const studyCentreCodes = [student.studyCentreCode];
 
     // Fetch all the branches with the matching branch codes
-    const branch = await Branch.findOne({ branchCode: student.branchCode });
+    const branch = await Branch.findOne({ studyCentreCode: student.studyCentreCode });
 
     const classData = await Class.findOne({ className: student.className });
 
@@ -59,7 +59,7 @@ router.post("/download", async (req, res) => {
 
     const studentsWithBranchAndClassName = {
       ...student._doc,
-      branchName: branch ? branch.branchName : null,
+      studyCentreName: branch ? branch.studyCentreName : null,
       className: classData ? classData.className : null,
     };
     console.log(studentsWithBranchAndClassName);

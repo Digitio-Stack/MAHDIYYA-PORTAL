@@ -166,7 +166,7 @@ function StudentProfile() {
                             Study Center
                           </div>
                           <div className="px-4 py-2">
-                            {student?.branch?.branchName}
+                            {student?.branch?.studyCentreName}
                           </div>
                         </div>
                         <div className="grid grid-cols-2">

@@ -28,7 +28,7 @@ const AddStudent = () => {
     dateOfBirth: "",
     phone: "",
     branch: "",
-    branchCode: "",
+    studyCentreCode: "",
     className: "",
     class: "",
   });

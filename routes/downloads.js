@@ -67,6 +67,14 @@ router.get("/student", async (req, res, next) => {
     next(error);
   }
 });
+router.get("/:id", async (req, res, next) => {
+  try {
+    let data = await Download.findById(req.params.id);
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.delete("/:id", deleteOne(Download));
 

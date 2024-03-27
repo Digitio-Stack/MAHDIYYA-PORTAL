@@ -18,44 +18,67 @@ exports.getAllStudents = async (req, res, next) => {
             class: mongoose.Types.ObjectId(query.class),
           },
         },
+        {
+          $lookup: {
+            from: "classes",
+            foreignField: "_id",
+            localField: "class",
+            as: "class",
+          },
+        },
+        {
+          $lookup: {
+            from: "studycentres",
+            foreignField: "_id",
+            localField: "branch",
+            as: "branch",
+          },
+        },
       ]);
       return res.status(200).json(data);
     } else {
-      const populatedStudents = await Student.find()
-        .populate("branch")
-        .populate("class");
-
-      const branchStudentCounts = populatedStudents.reduce(
-        (counts, student) => {
-          const { branch, class: studentClass } = student;
-          if (!branch || !studentClass) return counts; // Skip if branch or class is missing
-
-          const { _id: branchId, branchName, branchCode } = branch;
-          const { _id: classId, className } = studentClass;
-
-          let existingBranch = counts.find(
-            (item) =>
-              item.branchId === branchId && item.branchCode === branchCode
-          );
-          if (!existingBranch) {
-            existingBranch = { branchId, branchName, branchCode, classes: [] };
-            counts.push(existingBranch);
-          }
-
-          let existingClass = existingBranch.classes.find(
-            (item) => item.classId === classId
-          );
-          if (!existingClass) {
-            existingClass = { classId, className, studentCount: 0 };
-            existingBranch.classes.push(existingClass);
-          }
-
-          existingClass.studentCount++;
-
-          return counts;
+      const branchStudentCounts = await Student.aggregate([
+        {
+          $lookup: {
+            from: "studycentres",
+            localField: "branch",
+            foreignField: "_id",
+            as: "branch",
+          },
         },
-        []
-      );
+        { $unwind: "$branch" },
+        {
+          $lookup: {
+            from: "classes",
+            localField: "class",
+            foreignField: "_id",
+            as: "class",
+          },
+        },
+        { $unwind: "$class" },
+        {
+          $group: {
+            _id: {
+              branchName: "$branch.studyCentreName",
+              className: "$class.className",
+              studyCentreCode: "$branch.studyCentreCode",
+            },
+            studentCount: { $sum: 1 },
+          },
+        },
+        {
+          $group: {
+            _id: "$_id.branchName",
+            studyCentreCode: { $first: "$_id.studyCentreCode" }, // Get the first study centre code
+            classes: {
+              $push: {
+                className: "$_id.className",
+                studentCount: "$studentCount",
+              },
+            },
+          },
+        },
+      ]);
 
       res.json(branchStudentCounts);
     }
@@ -118,7 +141,7 @@ exports.getBranchStudents = async (req, res, next) => {
     let data = await Student.aggregate([
       {
         $match: {
-          branch: mongoose.Types.ObjectId(req.params.branchId),
+          branch: mongoose.Types.ObjectId(req.params.studyCentreId),
           class: mongoose.Types.ObjectId(req.params.classId),
           verified: true,
         },
@@ -143,7 +166,7 @@ exports.getMyAdmissions = async (req, res, next) => {
 exports.getAllAdmissionRequests = async (req, res, next) => {
   try {
     let data = await Student.find({ verified: false })
-      .populate("branch", "branchName")
+      .populate("branch", "studyCentreName")
       .populate("class", "className")
       .sort({ createdAt: 1 });
     res.status(200).json(data);
@@ -164,7 +187,7 @@ exports.getAdmissionRequests = async (req, res, next) => {
       },
       {
         $lookup: {
-          from: "branches",
+          from: "studycentres",
           localField: "_id",
           foreignField: "_id",
           as: "branch",
@@ -177,7 +200,7 @@ exports.getAdmissionRequests = async (req, res, next) => {
     next(error);
   }
 };
-exports.deleteStudent = globalFunctions.deleteOne(Student)
+exports.deleteStudent = globalFunctions.deleteOne(Student);
 exports.excelUpload = async (req, res) => {
   try {
     // Read uploaded file
