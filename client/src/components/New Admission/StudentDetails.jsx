@@ -90,9 +90,17 @@ function StudentDetails({ onChange, formData, nextPage, formErrors }) {
   return (
     <section className="bg-white p-6">
       <div className="max-w-screen-xl mx-auto">
-        <h3 className="text-4xl font-bold text-blue-900 uppercase my-4">
+        <h3 className="text-4xl text-center font-bold text-blue-900 uppercase my-4">
           Admission SECTION
         </h3>
+        <div className="flex items-center flex-col justify-center">
+          <img src="/logo.png" className="h-20" alt="" />
+          <div className="flex space-x-3">
+            <p>CPET DARUL HUDA</p>
+            <p>cpetdhiu.in</p>
+            <p>+91 9746229547</p>
+          </div>
+        </div>
 
         <form className="lg:grid lg:grid-cols-2 lg:gap-8">
           {forms.map((form, key) => (
@@ -118,7 +126,6 @@ function StudentDetails({ onChange, formData, nextPage, formErrors }) {
             </div>
           ))}
 
-          
           <div className="lg:col-span-1">
             <label className="block  text-sm font-bold mb-2" htmlFor="username">
               District

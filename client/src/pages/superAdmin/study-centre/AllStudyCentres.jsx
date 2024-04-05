@@ -12,7 +12,7 @@ function AllStudyCentres() {
 
   const getAllStudyCentres = async () => {
     try {
-      let { data } = await Axios.get(`/study-centre?sort=studyCentreCode`);
+      let { data } = await Axios.get(`/study-centre?sort=studyCentreName`);
       setStudyCentres(data.docs);
     } catch (error) {
       console.log(error);

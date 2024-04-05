@@ -1,6 +1,6 @@
 import ProtectedRoutes from "../ProtectRoutes";
 import Restricted from "../Restricted";
-import AddStudents from "../components/New Admission/NewAdmission.jsx";
+import NewAdmission from "../components/New Admission/NewAdmission.jsx";
 import Login from "./Login";
 import NotAllowed from "./NotAllowed";
 import NotLoggedIn from "./NotLoggedIn";
@@ -46,7 +46,7 @@ export const Auth = {
 export const Student = {
   ClassBasedStudents,
   EditStudent,
-  AddStudents,
+  NewAdmission,
   Profile,
   AllClasses,
   AddStudent,

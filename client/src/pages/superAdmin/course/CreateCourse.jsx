@@ -1,23 +1,17 @@
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Axios from "../../../Axios";
 import CreateHtml from "../../../components/CreateHtml";
 
 function CreateCourse() {
-  const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
-  console.log(courses);
 
   const initialState = {
     courseTitle: "",
     duration: "",
     description: "",
     amount: "",
-    courseFor: "",
   };
 
   const [inputData, setinputData] = useState(initialState);
@@ -30,26 +24,12 @@ function CreateCourse() {
     setinputData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const deleteCourse = async (id) => {
-    try {
-      if (window.confirm("do you want to delete this course")) {
-        let res = await Axios.delete(`/course/${id}`);
-        getAllCourses();
-      }
-    } catch (error) {
-      console.log(error.response.data);
-      toast.error("something went wrong", {
-        autoClose: 3000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-    }
-  };
+  
 
   const handleSubmit = async (e) => {
     const formData = new FormData();
     formData.append("courseTitle", inputData.courseTitle);
     formData.append("amount", inputData.amount);
-    formData.append("courseFor", inputData.courseFor);
     formData.append("duration", inputData.duration);
     formData.append("description", inputData.description);
     formData.append("image", image);
@@ -70,24 +50,14 @@ function CreateCourse() {
       navigate("/admin");
     } catch (error) {
       setLoading(false);
+      console.log(error);
       toast.error("Something went wrong", {
         autoClose: 2000,
         position: toast.POSITION.TOP_CENTER,
       });
-      console.log(error.response);
     }
   };
-  const getAllCourses = async () => {
-    try {
-      let { data } = await Axios.get("/course");
-      setCourses(data);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-  useEffect(() => {
-    getAllCourses();
-  }, []);
+
   return (
     <>
       <div className="w-full ml-6">
@@ -197,27 +167,7 @@ function CreateCourse() {
                   />
                 </div>
               </div>
-              <div className="lg:col-span-1">
-                <div className="px-4 sm:px-0">
-                  <label
-                    className="block capitalize text-sm font-bold mb-2"
-                    htmlFor="username"
-                  >
-                    type of students
-                  </label>
-                  <select
-                    className="block p-4 pl-10 w-full text-sm text-blue-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    name="courseFor"
-                    id=""
-                    onChange={(e) => onChange(e)}
-                  >
-                    <option hidden>select </option>
-                    <option value="boys">boys</option>
-                    <option value="girls">girls</option>
-                    <option value="both">both</option>
-                  </select>
-                </div>
-              </div>
+              
               <div className="lg:col-span-1">
                 <div className="px-4 sm:px-0">
                   <label
@@ -249,107 +199,7 @@ function CreateCourse() {
             </form>
           </div>
         </section>
-        <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
-          <table className="min-w-full leading-normal">
-            <thead>
-              <tr>
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  #
-                </th>
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Image
-                </th>
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Course Name
-                </th>
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Duration
-                </th>
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  For
-                </th>
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Amount
-                </th>
-
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Edit
-                </th>
-                <th
-                  scope="col"
-                  className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Delete
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {courses?.map((course, index) => (
-                <tr className="border-b">
-                  <td className="px-5 py-3 bg-white text-sm">{index + 1}</td>
-                  <td className="px-5 py-3 bg-white text-sm">
-                    <a target={"_blank"} href={course.image}>
-                      <img
-                        src={`/course/${course?.image}`}
-                        className="w-[100px]"
-                        alt={course.courseTitle}
-                      />
-                    </a>
-                  </td>
-                  <td className="px-5 py-3 bg-white text-sm">
-                    {course.courseTitle}
-                  </td>
-                  <td className="px-5 py-3 bg-white text-sm">
-                    {course.duration}
-                  </td>
-                  <td className="px-5 py-3 bg-white text-sm">
-                    {course.courseFor}
-                  </td>
-                  <td className="px-5 py-3 bg-white text-sm">
-                    {course.amount}
-                  </td>
-
-                  <td className="px-5 py-3 bg-white text-sm">
-                    <Link to={`/edit-course/${course._id}`}>
-                      <FontAwesomeIcon
-                        icon={faEdit}
-                        className="cursor-pointer"
-                      />
-                    </Link>
-                  </td>
-                  <td className="px-5 py-3 bg-white text-sm">
-                    <FontAwesomeIcon
-                      onClick={(e) => deleteCourse(course._id)}
-                      icon={faTrash}
-                      className="cursor-pointer"
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+       
       </div>
     </>
   );

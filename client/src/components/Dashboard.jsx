@@ -62,7 +62,7 @@ function Dashboard() {
     {
       text: "CPET COURSES",
       icon: faBook,
-      link: "/all-courses",
+      link: "/courses",
     },
     {
       text: "CLASS MANAGEMENT ",

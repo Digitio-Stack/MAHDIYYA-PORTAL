@@ -13,6 +13,8 @@ import CreateMessage from "./pages/superAdmin/CreateMessage";
 import EditSubject from "./pages/superAdmin/EditSubject";
 import RecycleBin from "./pages/superAdmin/RecycleBin";
 import UploadedFiles from "./pages/superAdmin/UploadedFiles";
+import CourseHome from "./pages/superAdmin/course/CourseHome";
+import CourseTable from "./pages/superAdmin/course/CourseTable";
 import CreateNotification from "./pages/superAdmin/notification/CreateNotification";
 
 export const SuperAdminRoutes = [
@@ -51,6 +53,16 @@ export const SuperAdminRoutes = [
   {
     route: "/edit-subject/:id",
     component: <EditSubject />,
+    role: "superAdmin",
+  },
+  {
+    route: "/courses",
+    component: <CourseHome />,
+    role: "superAdmin",
+  },
+  {
+    route: "/course-table",
+    component: <CourseTable />,
     role: "superAdmin",
   },
 

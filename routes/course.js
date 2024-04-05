@@ -5,35 +5,46 @@ const Course = require("../models/courseModel");
 const multer = require("multer");
 const { deleteOne } = require("../utils/globalFuctions");
 const { deleteCourse } = require("../controllers/courseController");
+const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
+const streamifier = require("streamifier"); // Install this package: npm install streamifier
+
+dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUDNAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads/course");
-  },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + file.originalname);
+    cb(null, file.originalname);
   },
 });
-const uploads = multer({ storage: storage });
+const upload = multer({ storage });
+
+
 
 router.post(
   "/",
   protect,
   restrictTo("superAdmin"),
-  catchAsync(async (req, res, next) => {
-    const uploadSingle = uploads.single("image");
-    uploadSingle(req, res, async (err) => {
-      if (!err) {
-        let data = await Course.create({
-          ...req.body,
-          image: req.file.filename,
-        });
-        res.status(200).json(data);
-      } else {
-        console.log(err);
-      }
-    });
-  })
+  upload.single("image"),
+  async (req, res, next) => {
+    try {
+     
+      const cldRes = await cloudinary.uploader.upload(req.file.path);
+      let data = await Course.create({
+        ...req.body,
+        image: cldRes.secure_url,
+      });
+      res.status(201).json({ message: "Course Added", course: data });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json(error);
+    }
+  }
 );
 
 router.get(
@@ -59,9 +70,7 @@ router.delete("/:id", protect, restrictTo("superAdmin"), deleteCourse);
 router.get(
   "/:id",
   catchAsync(async (req, res) => {
-    let data = await Course.findById(req.params.id).populate(
-      "learners.student"
-    );
+    let data = await Course.findById(req.params.id)
     res.status(200).json(data);
   })
 );

@@ -9,7 +9,6 @@ function Admissions() {
   const getAdmissions = async () => {
     try {
       let studentsData = await Axios.get("/student/my-students/data");
-      console.log(studentsData.data);
       let { data } = await Axios.get("/student/my-admissions/data");
       setStudents(data);
     } catch (error) {
@@ -19,42 +18,13 @@ function Admissions() {
   const approveAdmission = async (studentId) => {
     try {
       // Fetch student data
-      let studentsData = await Axios.get("/student/my-students/data");
-      let latestRegisterNo = "CMS001"; // Default value if no registerNo exists
-
-      // Check if there are existing registerNos
-      if (studentsData.data.length > 0) {
-        // Get the latest registerNo
-        const sortedRegisterNos = studentsData.data
-          .map((student) => student.registerNo)
-          .filter(
-            (registerNo) =>
-              typeof registerNo === "string" && registerNo.startsWith("CMS")
-          )
-          .sort();
-
-        if (sortedRegisterNos.length > 0) {
-          const lastRegisterNo =
-            sortedRegisterNos[sortedRegisterNos.length - 1];
-          const numericPart = parseInt(lastRegisterNo.substring(3));
-
-          // Check if the parsing operation succeeds
-          if (!isNaN(numericPart)) {
-            latestRegisterNo = "CMS" + ("000" + (numericPart + 1)).slice(-3);
-          }
-        }
-      }
 
       // Update the student's data with the new registerNo
-      let { data } = await Axios.patch("/student/" + studentId, {
+      await Axios.patch("/student/" + studentId, {
         verified: true,
-        registerNo: latestRegisterNo,
       });
 
-      // Refresh the admissions data
       getAdmissions();
-
-      // Show success message
       toast.success("Admission Approved", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 4000,
@@ -97,7 +67,10 @@ function Admissions() {
           <tbody>
             {students.length > 0 &&
               students.map((student, key) => (
-                <tr key={key} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr
+                  key={key}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-blue-900 whitespace-nowrap dark:text-white"

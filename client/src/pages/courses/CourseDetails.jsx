@@ -1,7 +1,10 @@
 import "draft-js/dist/Draft.css";
 import React, { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Axios from "../../Axios";
+import HtmlViewer from "./HtmlViewer";
 
 function CourseDetails() {
   const { id } = useParams();
@@ -17,7 +20,6 @@ function CourseDetails() {
     }
   };
 
-  
   useEffect(() => {
     getCourseDetails();
   }, [id]);
@@ -55,9 +57,7 @@ function CourseDetails() {
         <p>{course?.description}</p>
       </div>
       <h4 className="text-lg font-semibold my-4 uppercase">course details</h4>
-      <div dangerouslySetInnerHTML={{ __html: course?.details }}></div>
-
-      
+      <HtmlViewer value={course?.details} />
     </article>
   );
 }
