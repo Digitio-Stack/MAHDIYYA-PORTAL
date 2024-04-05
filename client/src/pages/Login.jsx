@@ -12,7 +12,7 @@ function Login() {
   const [show, setShow] = useState(false);
 
   if (authData) {
-    window.location.href = "/admin";
+    window.location.href = "/";
   }
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ function Login() {
         setUsername("");
         setPassword("");
         setAuthData(res.data);
-        window.location.href = "/admin";
+        window.location.href = "/";
       }
     } catch (error) {
       console.log(error.response);

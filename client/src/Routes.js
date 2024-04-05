@@ -150,7 +150,7 @@ export const SuperAdminRoutes = [
 
 export const AdminRoutes = [
   {
-    route: "/admin",
+    route: "/",
     component: <AdminHome />,
   },
   {

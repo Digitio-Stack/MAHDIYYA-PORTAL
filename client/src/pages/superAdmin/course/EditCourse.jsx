@@ -54,7 +54,7 @@ function EditCourse() {
           position: toast.POSITION.TOP_CENTER,
         });
       }
-      navigate("/admin");
+      navigate("/");
     } catch (error) {
       setLoading(false);
       toast.error("Something went wrong", {

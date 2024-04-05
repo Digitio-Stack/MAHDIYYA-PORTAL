@@ -47,7 +47,7 @@ function CreateCourse() {
           position: toast.POSITION.TOP_CENTER,
         });
       }
-      navigate("/admin");
+      navigate("/");
     } catch (error) {
       setLoading(false);
       console.log(error);

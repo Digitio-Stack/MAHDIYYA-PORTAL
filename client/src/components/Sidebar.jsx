@@ -25,7 +25,7 @@ function Sidebar() {
   const navigations = [
     {
       name: "Dashboard",
-      route: "/admin",
+      route: "/",
       icon: faHome,
     },
 
@@ -44,7 +44,7 @@ function Sidebar() {
   const SuperAdmin = [
     {
       name: "Dashboard",
-      route: "/admin",
+      route: "/",
       icon: faHome,
     },
    

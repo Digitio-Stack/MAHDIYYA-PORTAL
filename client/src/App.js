@@ -3,7 +3,7 @@ import ReactGA from "react-ga";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import 'react-quill/dist/quill.bubble.css'
+import "react-quill/dist/quill.bubble.css";
 import { AdminRoutes, SuperAdminRoutes } from "./Routes";
 import StickyNavbar from "./components/Navbar";
 import AdmissionCreated from "./components/New Admission/AdmissionCreated";
@@ -44,14 +44,11 @@ export default function App() {
           <ToastContainer />
           <Routes>
             <Route path="*" element={<Auth.NotFound />} />
-            <Route element={<StickyNavbar />}>
-              <Route path="/" element={<Homepage />} />
-            </Route>
+            <Route path="/login"  element={<Auth.Login />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/admission-started" element={<AdmissionStarted />} />
             <Route path="/result" element={<StudentResult />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/login" element={<Auth.Login />} />
             <Route path="/admission-created" element={<AdmissionCreated />} />
             <Route path="/course-details/:id" element={<CourseDetails />} />
             <Route path="/all-courses" element={<AllCourses />} />
