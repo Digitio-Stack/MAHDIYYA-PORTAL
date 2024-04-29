@@ -66,7 +66,7 @@ const studentSchema = new mongoose.Schema(
     },
     branch: {
       type: mongoose.Types.ObjectId,
-      required: [true, "Please select a branch"],
+      required: [true, "Please select study centre"],
       maxLength: [100, "100 characters are allowed"],
       ref: "Branch",
     },

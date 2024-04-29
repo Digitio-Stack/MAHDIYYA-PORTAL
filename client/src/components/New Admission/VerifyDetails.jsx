@@ -93,7 +93,7 @@ function VerifyDetails({
                     Selected Branch
                     {errors.branch && (
                       <div className="text-red-500 text-sm text-center">
-                        {"Please select a branch"}
+                        {"Please select study centre"}
                       </div>
                     )}
                   </label>

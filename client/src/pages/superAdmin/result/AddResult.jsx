@@ -10,7 +10,6 @@ const AddResult = () => {
   const [subjects, setSubjects] = useState([]);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState([]);
 
   const [classes, setClasses] = useState([]);
   const [branches, setBranches] = useState([]);
@@ -50,7 +49,6 @@ const AddResult = () => {
           autoClose: 3000,
         });
         setLoading(false);
-        getGlobalResults();
         setTimeout(() => {
           window.location.reload();
         }, 3000);
@@ -107,15 +105,7 @@ const AddResult = () => {
       console.error(error);
     }
   };
-  const getGlobalResults = async () => {
-    try {
-      const response = await Axios.get(`/result/data`);
-      console.log(response.data);
-      setResults(response.data);
-    } catch (error) {
-      console.error(error.response.data);
-    }
-  };
+  
 
   useEffect(() => {
     getStudents();
@@ -126,12 +116,29 @@ const AddResult = () => {
     getAllExams();
     getAllSubjects();
     getAllBranches();
-    getGlobalResults();
   }, [pathname]);
   return (
     <div className=" mt-8">
       <div className="max-w-md mx-auto ">
         <h2 className="text-2xl font-bold mb-4 text-center">Add Result</h2>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="class">
+            Study Centre
+          </label>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="branch"
+            type="text"
+            onChange={(e) => setSelectedBranch(e.target.value)}
+          >
+            <option hidden>select study centre</option>
+            {branches.map((branch, key) => (
+              <option value={branch._id} key={key}>
+                {branch.studyCentreName}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="class">
             Class
@@ -172,24 +179,7 @@ const AddResult = () => {
           </select>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="class">
-            Study Centre
-          </label>
-          <select
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="branch"
-            type="text"
-            onChange={(e) => setSelectedBranch(e.target.value)}
-          >
-            <option hidden>select a branch</option>
-            {branches.map((branch, key) => (
-              <option value={branch._id} key={key}>
-                {branch.studyCentreName}
-              </option>
-            ))}
-          </select>
-        </div>
+        
 
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="class">
@@ -255,56 +245,7 @@ const AddResult = () => {
         </div>
       </div>
 
-      <div className="py-4 max-w-3xl mx-auto my-7">
-        <h2 className="text-lg font-semibold mb-2 text-center">
-          Submitted Results
-        </h2>
-        <table className="w-full border-collapse bg-blue-100 border border-gray-300">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 px-4 py-2">#</th>
-              <th className="border border-gray-300 px-4 py-2">Study Centre</th>
-              <th className="border border-gray-300 px-4 py-2">Centre Code</th>
-              <th className="border border-gray-300 px-4 py-2">Class</th>
-              <th className="border border-gray-300 px-4 py-2">Subject </th>
-              <th className="border border-gray-300 px-4 py-2">Documents </th>
-              {/* Optionally, you can add more columns here */}
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((resultGroup, key) => (
-              <>
-                <tr
-                  key={`${resultGroup._id.branch_id}-${resultGroup._id.class_id}`}
-                  className="hover:bg-gray-100"
-                >
-                  <td className="border border-gray-300 px-4 py-2">
-                    {key + 1}
-                  </td>
-
-                  <td className="border border-gray-300 px-4 py-2">
-                    {resultGroup?._id?.studyCentreName}
-                  </td>
-
-                  <td className="border border-gray-300 px-4 py-2">
-                    {resultGroup?._id?.studyCentreCode}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {resultGroup?._id?.className}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {resultGroup?._id?.subject}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {resultGroup?.count}
-                  </td>
-                  {/* Optionally, you can display additional data here */}
-                </tr>
-              </>
-            ))}
-          </tbody>
-        </table>
-      </div>
+     
     </div>
   );
 };

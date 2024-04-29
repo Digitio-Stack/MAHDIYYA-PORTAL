@@ -78,7 +78,7 @@ exports.getMyResults = async (req, res) => {
 
     return res.json({
       results,
-      status: allSubjectsPassed ? "Promoted" : "Not promoted",
+      promoted: allSubjectsPassed ,
       grandTotal,
       percentage: roundedPercentage,
       totalPossibleMarks,

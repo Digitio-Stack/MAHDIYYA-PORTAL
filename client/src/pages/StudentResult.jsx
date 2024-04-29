@@ -35,7 +35,7 @@ const StudentResultPage = () => {
     fetchExams();
   }, []);
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto ">
       <form
         onSubmit={handleSubmit}
         className="max-w-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -89,7 +89,7 @@ const StudentResultPage = () => {
 
       {studentResults.length > 0 && (
         <>
-          <div className="bg-gray-50 my-4  p-10 shadow-lg" ref={ref}>
+          <div className="bg-gray-50 my-4  p-10 shadow-lg " ref={ref}>
             <img src="/logo.png" className="h-28 mx-auto" alt="" />
 
             <div className="p-4">
@@ -160,16 +160,16 @@ const StudentResultPage = () => {
               </p>
               <p
                 className={`text-gray-200 p-1 font-semibold  ${
-                  resultData.passed ? "bg-green-500" : "bg-red-500"
+                  resultData?.promoted ? "bg-green-500" : "bg-red-500"
                 }`}
               >
-                Status: {resultData.passed ? "Promoted" : "Not Promoted"}
+                Status: {resultData?.promoted ? "Promoted" : "Not Promoted"}
               </p>
               <p className="text-gray-800 font-semibold p-2">
                 Rank: {resultData.studentRank}
               </p>
             </div>
-            <div className="p-3 text-center bg-gray-300 mt-4">
+            <div className="p-3 text-center bg-gray-300 mt-4 w-full">
               <h1 className="font-semibold text-gray-600">CPET DARUL HUDA </h1>
               <a href="https://cpetdhiu.in">cpetdhiu.in </a>
             </div>

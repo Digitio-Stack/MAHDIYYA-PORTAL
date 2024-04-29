@@ -7,84 +7,10 @@ exports.getStudent = globalFunctions.getOne(Student, "branch", "class");
 
 exports.getAllStudents = async (req, res, next) => {
   try {
-    let query = req.query;
-
-    if (query.class && query.branch) {
-      const data = await Student.aggregate([
-        {
-          $match: {
-            branch: mongoose.Types.ObjectId(query.branch),
-            verified: true,
-            class: mongoose.Types.ObjectId(query.class),
-          },
-        },
-        {
-          $lookup: {
-            from: "classes",
-            foreignField: "_id",
-            localField: "class",
-            as: "class",
-          },
-        },
-        {
-          $lookup: {
-            from: "studycentres",
-            foreignField: "_id",
-            localField: "branch",
-            as: "branch",
-          },
-        },
-      ]);
-      return res.status(200).json(data);
-    } else {
-      const branchStudentCounts = await Student.aggregate([
-        {
-          $lookup: {
-            from: "studycentres",
-            localField: "branch",
-            foreignField: "_id",
-            as: "branch",
-          },
-        },
-        { $unwind: "$branch" },
-        {
-          $lookup: {
-            from: "classes",
-            localField: "class",
-            foreignField: "_id",
-            as: "class",
-          },
-        },
-        { $unwind: "$class" },
-        {
-          $group: {
-            _id: {
-              branchName: "$branch.studyCentreName",
-              className: "$class.className",
-              studyCentreCode: "$branch.studyCentreCode",
-            },
-            studentCount: { $sum: 1 },
-          },
-        },
-        {
-          $group: {
-            _id: "$_id.branchName",
-            studyCentreCode: { $first: "$_id.studyCentreCode" }, // Get the first study centre code
-            classes: {
-              $push: {
-                className: "$_id.className",
-                studentCount: "$studentCount",
-              },
-            },
-          },
-        },
-      ]);
-
-      res.json(branchStudentCounts);
-    }
+    let data=await Student.find({class:req.query.classId,branch:req.query.studyCentre}).populate('branch').populate('class')
+    res.status(200).json(data)
   } catch (error) {
-    console.log(error);
-    next(error);
+    
   }
 };
 exports.getAdmissions = globalFunctions.getAll(Student, "branch", "class");

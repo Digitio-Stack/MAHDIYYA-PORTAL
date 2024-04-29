@@ -10,10 +10,8 @@ function EditResult() {
   const [exams, setExams] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedBranch, setSelectedBranch] = useState(null);
-  const [studentMarks, setStudentMarks] = useState([]);
   const [results, setResults] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [students, setStudents] = useState([]);
   const [updatedData, setUpdatedData] = useState([]);
 
   const getAllClasses = async () => {
@@ -45,16 +43,6 @@ function EditResult() {
     try {
       const response = await Axios.get("/subject");
       setSubjects(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const getStudents = async () => {
-    try {
-      const response = await Axios.get(
-        `/student/data/${selectedBranch}/${selectedClass}`
-      );
-      setStudents(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -107,7 +95,6 @@ function EditResult() {
     getAllExams();
     getAllSubjects();
     getAllBranches();
-    getStudents();
   }, []);
 
   useEffect(() => {
@@ -171,7 +158,7 @@ function EditResult() {
             type="text"
             onChange={(e) => setSelectedBranch(e.target.value)}
           >
-            <option hidden>select a branch</option>
+            <option hidden>select study centre</option>
             {branches.map((branch, key) => (
               <option value={branch._id} key={key}>
                 {branch.studyCentreName}
@@ -239,6 +226,7 @@ function EditResult() {
                             onChange={(e) =>
                               handleMarkChange(key, e.target.value)
                             }
+                            onWheel={(e) => e.target.blur()}
                             className="py-3 px-4 block w-20 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                             min={0}
                             max={100}

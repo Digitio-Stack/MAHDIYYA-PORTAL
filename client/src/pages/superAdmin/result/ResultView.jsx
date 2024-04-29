@@ -132,13 +132,15 @@ function ResultView() {
             {authData.role === "superAdmin"
               ? results
                   .filter((result) => result.student.branch === studyCentreId)
-                  .map((result, key) => (
-                    <ResultTableRow
-                      result={result}
-                      key={key}
-                      subjectNames={subjectNames}
-                    />
-                  ))
+                  .map((result, index) => {
+                    return(
+                      <ResultTableRow
+                        result={result}
+                        index={index}
+                        subjectNames={subjectNames}
+                      />
+                    )
+                  })
               : results
                   .filter(
                     (result) => result.student.branch === authData.branch._id
@@ -157,10 +159,10 @@ function ResultView() {
   );
 }
 
-function ResultTableRow({ result, key, subjectNames }) {
+function ResultTableRow({ result, index, subjectNames }) {
   return (
-    <tr key={result.student._id} className="border-b border-neutral-200">
-      <td className="text-sm">{key + 1}.</td>
+    <tr key={index} className="border-b border-neutral-200">
+      <td className="text-sm">{index + 1}</td>
       <td className="text-sm">{result.student?.registerNo}</td>
       <td className="text-sm">{result.student?.studentName}</td>
       {Array.from(subjectNames).map((subjectName) => {
