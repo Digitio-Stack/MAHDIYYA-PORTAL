@@ -42,27 +42,46 @@ function Homepage() {
 
         {/*  */}
         {/* component */}
-        <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSfb_S31WKWCzDglCQokIOkyfrUSWSmqCjlaPuyMxfE8g_CXOg/viewform"
-          target="_blank"
-          className="flex justify-center  items-center mx-4 bg-gray-100"
-        >
-          <div className=" bg-[#275e68] gap-7 max-w-2xl flex-wrap items-center justify-center  p-3 rounded-xl flex w-full my-5 ">
-            <div className=" p-4  rounded-xl">
-              <p className="w-full text-2xl font-semibold uppercase text-white">
-                registration started
-              </p>
-              <p className="w-full text-sm pb-4 font-semibold text-gray-100">
-                MAHDIYYA study centre registration started
-              </p>
-              <div className="lg:flex justify-between items-center">
-                <p className="text-white text-center w-full animate-pulse hover:bg-[#48909c] bg-[#31626b] rounded-full px-3 py-1 font-semibold cursor-pointer transition border border-white  hover:bg-transparent ">
-                  Register Now
+        <div className="lg:grid grid-cols-2 gap-x-3">
+          <a href="https://result.dhiu.in" target="_blank" className="w-full mx-2">
+            <div className=" bg-[#275e68] p-3 rounded-xl w-full my-5 ">
+              <div className=" p-4  rounded-xl">
+                <p className="w-full text-2xl font-semibold uppercase text-white">
+                  Result Published
                 </p>
+                <p className="w-full text-sm pb-4 font-semibold text-gray-100">
+                  MAHDIYYA Result Published
+                </p>
+                <div className="lg:flex justify-between items-center">
+                  <p className="text-white text-center w-full animate-pulse hover:bg-[#48909c] bg-[#31626b] rounded-full px-3 py-1 font-semibold cursor-pointer transition border border-white  hover:bg-transparent ">
+                    Check Now 
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </a>
+          </a>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfb_S31WKWCzDglCQokIOkyfrUSWSmqCjlaPuyMxfE8g_CXOg/viewform"
+            target="_blank"
+            className="w-full mx-2"
+          >
+            <div className=" bg-[#275e68] p-3 rounded-xl  my-5 ">
+              <div className=" p-4  rounded-xl">
+                <p className="w-full text-2xl font-semibold uppercase text-white">
+                  registration started
+                </p>
+                <p className="w-full text-sm pb-4 font-semibold text-gray-100">
+                  MAHDIYYA study centre registration started
+                </p>
+                <div className="lg:flex justify-between items-center">
+                  <p className="text-white text-center w-full animate-pulse hover:bg-[#48909c] bg-[#31626b] rounded-full px-3 py-1 font-semibold cursor-pointer transition border border-white  hover:bg-transparent ">
+                    Register Now
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
 
         {/*  */}
 
