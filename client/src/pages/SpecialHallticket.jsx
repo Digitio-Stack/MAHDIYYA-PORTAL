@@ -19,7 +19,7 @@ const PdfCustomizer = () => {
       let { data } = await Axios.get(
         `/hall-ticket/special-hallticket/${registerNumber}`
       );
-
+      console.log(data);
       setStudentData(data);
       setError(null);
 
@@ -31,6 +31,7 @@ const PdfCustomizer = () => {
       const pdfDoc = await PDFDocument.load(pdfBytes);
       const pages = pdfDoc.getPages();
       const firstPage = pages[0];
+
       const { height } = firstPage.getSize();
       firstPage.drawText(data.name, {
         x: 150,
@@ -68,18 +69,57 @@ const PdfCustomizer = () => {
         size: 9,
         color: rgb(0, 0, 0),
       });
-      firstPage.drawText(data?.subjectsSecondSem || "", {
-        x: 200,
-        y: height - 410,
-        size: 9,
-        color: rgb(0, 0, 0),
-      });
-      firstPage.drawText(data?.subjectsSixthSem || "", {
-        x: 200,
-        y: height - 435,
-        size: 9,
-        color: rgb(0, 0, 0),
-      });
+      firstPage.drawText(
+        data?.semesters?.secondSem?.split(",").join("     ") ||
+          "_____________________",
+        {
+          x: 200,
+          y: height - 430,
+          size: 9,
+          // color: rgb(0, 0, 0),
+        }
+      );
+      firstPage.drawText(
+        data?.semesters?.forthSem?.split(",").join("     ") ||
+          "_____________________",
+        {
+          x: 200,
+          y: height - 485,
+          size: 9,
+          // color: rgb(0, 0, 0),
+        }
+      );
+      firstPage.drawText(
+        data?.semesters?.mahdiyyaSecondSem?.split(",").join("     ") ||
+          "_____________________",
+        {
+          x: 200,
+          y: height - 550,
+          size: 9,
+          // color: rgb(0, 0, 0),
+        }
+      );
+      firstPage.drawText(
+        data?.semesters?.mahdiyyaForthSem?.split(",").join("     ") ||
+          "_____________________",
+        {
+          x: 200,
+          y: height - 615,
+          size: 9,
+          // color: rgb(0, 0, 0),
+        }
+      );
+      firstPage.drawText(
+        data?.semesters?.mahdiyyaSixthSem?.split(",").join("     ") ||
+          "_____________________",
+        {
+          x: 200,
+          y: height - 688,
+          size: 9,
+          color: rgb(0, 0, 0),
+        }
+      );
+
       const modifiedPdfBytes = await pdfDoc.save();
       setPdfBytes(modifiedPdfBytes);
     } catch (error) {
@@ -102,7 +142,9 @@ const PdfCustomizer = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4">
-        <h1 className="text-center font-bold text-xl uppercase my-5 text-sky-800">Download Your Hall Ticket  </h1>
+      <h1 className="text-center font-bold text-xl uppercase my-5 text-sky-800">
+        Download Your Hall Ticket{" "}
+      </h1>
       <input
         type="text"
         value={registerNumber}

@@ -6,8 +6,12 @@ const specialHallTicketSchame = new mongoose.Schema({
   name: String,
   registerNo: String,
   semester: String,
-  subjectsSecondSem: String,
-  subjectsSixthSem: String,
+  secondSem: String,
+  forthSem: String,
+  mahdiyyaSecondSem: String,
+  mahdiyyaForthSem: String,
+  mahdiyyaSixthSem: String,
+  examCentre: String,
 });
 
 const SpecialHallTicket = mongoose.model(
