@@ -5,6 +5,7 @@ const Student = require("../models/studentModel");
 const Branch = require("../models/studyCentreModel");
 const Class = require("../models/classModel");
 const { deleteOne } = require("../utils/globalFuctions");
+const SpecialHallTicket = require("../models/specialHallTicket");
 
 router.post("/", protect, restrictTo("superAdmin"), async (req, res) => {
   try {
@@ -34,24 +35,21 @@ router.get("/:id", async (req, res) => {
     res.status(400).json(error);
   }
 });
-router.delete("/:id",deleteOne(HallTicket));
+router.delete("/:id", deleteOne(HallTicket));
 router.post("/download", async (req, res) => {
   try {
     const student = await Student.findOne({
       registerNo: req.body.registerNo,
     });
-
     if (!student) {
       return res.status(400).json({ message: "Invalid Register Number" });
     }
 
-    // Extract all the unique branch codes from the student data
-    const studyCentreCodes = [student.studyCentreCode];
+    const branch = await Branch.findOne({
+      studyCentreCode: student.studyCentreCode,
+    });
 
-    // Fetch all the branches with the matching branch codes
-    const branch = await Branch.findOne({ studyCentreCode: student.studyCentreCode });
-
-    const classData = await Class.findOne({ className: student.className });
+    const classData = await Class.findOne({ _id: student.class });
 
     let hallTicket = await HallTicket.findOne({ class: classData._id })
       .populate("exam")
@@ -69,6 +67,23 @@ router.post("/download", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json(error);
+  }
+});
+router.get("/special-hallticket/:registerNumber", async (req, res) => {
+  try {
+    const student = await SpecialHallTicket.findOne({
+      registerNo: req.params.registerNumber,
+    });
+    if (!student) {
+      return res.status(404).send("Student not found");
+    }
+    console.log('====================================');
+    console.log(student);
+    console.log('====================================');
+    res.status(200).json(student);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
   }
 });
 

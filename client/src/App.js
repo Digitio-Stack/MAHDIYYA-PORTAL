@@ -23,6 +23,7 @@ import StudentResult from "./pages/StudentResult";
 import AllCourses from "./pages/courses/AllCourses";
 import CourseDetails from "./pages/courses/CourseDetails";
 import Homepage from "./pages/homepage/Homepage";
+import SpecialHallTicket from "./pages/SpecialHallticket";
 
 export default function App() {
   ReactGA.initialize("G-CELLQQWRXC");
@@ -46,6 +47,7 @@ export default function App() {
             <Route path="*" element={<Auth.NotFound />} />
             <Route path="/login"  element={<Auth.Login />} />
             <Route path="/about-us" element={<About />} />
+            <Route path="/hallticket/download" element={<SpecialHallTicket />} />
             <Route path="/admission-started" element={<AdmissionStarted />} />
             <Route path="/result" element={<StudentResult />} />
             <Route path="/notifications" element={<Notifications />} />
