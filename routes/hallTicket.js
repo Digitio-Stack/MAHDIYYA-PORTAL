@@ -71,16 +71,49 @@ router.post("/download", async (req, res) => {
 });
 router.get("/special-hallticket/:registerNumber", async (req, res) => {
   try {
-    const student = await SpecialHallTicket.findOne({
+    const students = await SpecialHallTicket.find({
       registerNo: req.params.registerNumber,
     });
-    if (!student) {
+    console.log(students);
+    if (!students.length > 0) {
       return res.status(404).send("Student not found");
     }
-    console.log('====================================');
-    console.log(student);
-    console.log('====================================');
-    res.status(200).json(student);
+    // Assuming all students with the same registerNo have the same name and institution
+    const record = students[0]; // You can take the first record as a base
+
+    // Consolidate semester information
+    const semesters = {
+      secondSem: "",
+      forthSem: "",
+      mahdiyyaSecondSem: "",
+      mahdiyyaForthSem: "",
+      mahdiyyaSixthSem: "",
+    };
+
+    students.forEach((record) => {
+      if (record.secondSem) semesters.secondSem = record.secondSem;
+      if (record.forthSem) semesters.forthSem = record.forthSem;
+      if (record.mahdiyyaSecondSem)
+        semesters.mahdiyyaSecondSem = record.mahdiyyaSecondSem;
+      if (record.mahdiyyaForthSem)
+        semesters.mahdiyyaForthSem = record.mahdiyyaForthSem;
+      if (record.mahdiyyaSixthSem)
+        semesters.mahdiyyaSixthSem = record.mahdiyyaSixthSem;
+    });
+
+    const response = {
+      name: record.name,
+      registerNo: record.registerNo,
+      institution: record.institution,
+      examCentre: students[0].examCentre || students[1].examCentre,
+      semester: record.semester,
+      method: record.method,
+      semesters: semesters,
+    };
+
+    console.log(response);
+
+    res.status(200).json(response);
   } catch (error) {
     console.log(error);
     res.status(400).json({ error });
