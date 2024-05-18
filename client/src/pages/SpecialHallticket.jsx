@@ -60,7 +60,7 @@ const PdfCustomizer = () => {
       firstPage.drawText(data?.examCentre || "", {
         x: 200,
         y: height - 360,
-        size: 9,
+        size: 6,
         color: rgb(0, 0, 0),
       });
       firstPage.drawText(data?.method || "", {
@@ -73,8 +73,8 @@ const PdfCustomizer = () => {
         data?.semesters?.secondSem?.split(",").join("     ") ||
           "_____________________",
         {
-          x: 200,
-          y: height - 430,
+          x: 240,
+          y: height - 470,
           size: 9,
           // color: rgb(0, 0, 0),
         }
@@ -83,8 +83,8 @@ const PdfCustomizer = () => {
         data?.semesters?.forthSem?.split(",").join("     ") ||
           "_____________________",
         {
-          x: 200,
-          y: height - 485,
+          x: 240,
+          y: height - 525,
           size: 9,
           // color: rgb(0, 0, 0),
         }
@@ -93,8 +93,8 @@ const PdfCustomizer = () => {
         data?.semesters?.mahdiyyaSecondSem?.split(",").join("     ") ||
           "_____________________",
         {
-          x: 200,
-          y: height - 550,
+          x: 240,
+          y: height - 580,
           size: 9,
           // color: rgb(0, 0, 0),
         }
@@ -103,8 +103,8 @@ const PdfCustomizer = () => {
         data?.semesters?.mahdiyyaForthSem?.split(",").join("     ") ||
           "_____________________",
         {
-          x: 200,
-          y: height - 615,
+          x: 240,
+          y: height - 645,
           size: 9,
           // color: rgb(0, 0, 0),
         }
@@ -113,8 +113,8 @@ const PdfCustomizer = () => {
         data?.semesters?.mahdiyyaSixthSem?.split(",").join("     ") ||
           "_____________________",
         {
-          x: 200,
-          y: height - 688,
+          x: 240,
+          y: height - 698,
           size: 9,
           color: rgb(0, 0, 0),
         }
@@ -132,7 +132,7 @@ const PdfCustomizer = () => {
     try {
       if (pdfBytes) {
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        saveAs(blob, "customized-hall-ticket.pdf");
+        saveAs(blob, "hall-ticket.pdf");
       }
     } catch (error) {
       console.error("Error generating PDF", error);
