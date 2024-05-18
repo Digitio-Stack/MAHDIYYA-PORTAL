@@ -91,23 +91,23 @@ router.get("/special-hallticket/:registerNumber", async (req, res) => {
     };
 
     students.forEach((record) => {
-      if (record.secondSem) semesters.secondSem = record.secondSem;
-      if (record.forthSem) semesters.forthSem = record.forthSem;
-      if (record.mahdiyyaSecondSem)
-        semesters.mahdiyyaSecondSem = record.mahdiyyaSecondSem;
-      if (record.mahdiyyaForthSem)
-        semesters.mahdiyyaForthSem = record.mahdiyyaForthSem;
-      if (record.mahdiyyaSixthSem)
-        semesters.mahdiyyaSixthSem = record.mahdiyyaSixthSem;
+      if (record?.secondSem) semesters.secondSem = record?.secondSem;
+      if (record?.forthSem) semesters.forthSem = record?.forthSem;
+      if (record?.mahdiyyaSecondSem)
+        semesters.mahdiyyaSecondSem = record?.mahdiyyaSecondSem;
+      if (record?.mahdiyyaForthSem)
+        semesters.mahdiyyaForthSem = record?.mahdiyyaForthSem;
+      if (record?.mahdiyyaSixthSem)
+        semesters.mahdiyyaSixthSem = record?.mahdiyyaSixthSem;
     });
 
     const response = {
-      name: record.name,
-      registerNo: record.registerNo,
-      institution: record.institution,
-      examCentre: students[0].examCentre || students[1].examCentre,
-      semester: record.semester,
-      method: record.method,
+      name: record?.name,
+      registerNo: record?.registerNo,
+      institution: record?.institution,
+      examCentre: students[0]?.examCentre || students[1]?.examCentre,
+      semester: record?.semester,
+      method: record?.method,
       semesters: semesters,
     };
 

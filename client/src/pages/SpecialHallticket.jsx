@@ -33,6 +33,25 @@ const PdfCustomizer = () => {
       const firstPage = pages[0];
 
       const { height } = firstPage.getSize();
+      const drawColumnText = (text, x, yStart, yIncrement, size) => {
+        const lines = text.split(",");
+        lines.forEach((line, index) => {
+          firstPage.drawText(line.trim(), {
+            x: x,
+            y: yStart - index * yIncrement,
+            size: size,
+            // color: rgb(0, 0, 0),  // Uncomment if you want to set the color
+          });
+        });
+      };
+      
+      const yStartSecondSem = height - 470;
+      const yStartForthSem = height - 525;
+      const yStartMahdiyyaSecondSem = height - 580;
+      const yStartMahdiyyaForthSem = height - 645;
+      const yStartMahdiyyaSixthSem = height - 698;
+      const yIncrement = 15;  // Adjust this value as needed
+
       firstPage.drawText(data.name, {
         x: 150,
         y: height - 230,
@@ -60,7 +79,7 @@ const PdfCustomizer = () => {
       firstPage.drawText(data?.examCentre || "", {
         x: 200,
         y: height - 360,
-        size: 6,
+        size: 8,
         color: rgb(0, 0, 0),
       });
       firstPage.drawText(data?.method || "", {
@@ -69,57 +88,45 @@ const PdfCustomizer = () => {
         size: 9,
         color: rgb(0, 0, 0),
       });
-      firstPage.drawText(
-        data?.semesters?.secondSem?.split(",").join("     ") ||
-          "_____________________",
-        {
-          x: 240,
-          y: height - 470,
-          size: 9,
-          // color: rgb(0, 0, 0),
-        }
-      );
-      firstPage.drawText(
-        data?.semesters?.forthSem?.split(",").join("     ") ||
-          "_____________________",
-        {
-          x: 240,
-          y: height - 525,
-          size: 9,
-          // color: rgb(0, 0, 0),
-        }
-      );
-      firstPage.drawText(
-        data?.semesters?.mahdiyyaSecondSem?.split(",").join("     ") ||
-          "_____________________",
-        {
-          x: 240,
-          y: height - 580,
-          size: 9,
-          // color: rgb(0, 0, 0),
-        }
-      );
-      firstPage.drawText(
-        data?.semesters?.mahdiyyaForthSem?.split(",").join("     ") ||
-          "_____________________",
-        {
-          x: 240,
-          y: height - 645,
-          size: 9,
-          // color: rgb(0, 0, 0),
-        }
-      );
-      firstPage.drawText(
-        data?.semesters?.mahdiyyaSixthSem?.split(",").join("     ") ||
-          "_____________________",
-        {
-          x: 240,
-          y: height - 698,
-          size: 9,
-          color: rgb(0, 0, 0),
-        }
-      );
+      drawColumnText(
+  data?.semesters?.secondSem || "_____________________",
+  240,
+  yStartSecondSem,
+  yIncrement,
+  9
+);
 
+drawColumnText(
+  data?.semesters?.forthSem || "_____________________",
+  240,
+  yStartForthSem,
+  yIncrement,
+  9
+);
+
+drawColumnText(
+  data?.semesters?.mahdiyyaSecondSem || "_____________________",
+  240,
+  yStartMahdiyyaSecondSem,
+  yIncrement,
+  9
+);
+
+drawColumnText(
+  data?.semesters?.mahdiyyaForthSem || "_____________________",
+  240,
+  yStartMahdiyyaForthSem,
+  yIncrement,
+  9
+);
+
+drawColumnText(
+  data?.semesters?.mahdiyyaSixthSem || "_____________________",
+  240,
+  yStartMahdiyyaSixthSem,
+  yIncrement,
+  9
+);
       const modifiedPdfBytes = await pdfDoc.save();
       setPdfBytes(modifiedPdfBytes);
     } catch (error) {
