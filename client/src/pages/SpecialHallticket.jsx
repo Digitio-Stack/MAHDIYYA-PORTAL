@@ -150,8 +150,11 @@ const PdfCustomizer = () => {
         value={registerNumber}
         onChange={handleRegisterNumberChange}
         placeholder="Enter Register Number"
-        className="w-full mb-4 p-2 border border-gray-300 rounded"
+        className="w-full p-2 border border-gray-300 rounded"
       />
+      <p className="text-red-500 my-2 italic text-sm lowercase">
+        *Use Only Capital Letters{" "}
+      </p>
       {error && <div className="text-red-500">{error}</div>}
       {/* Display "Generate PDF" button only when PDF bytes are available */}
       {pdfBytes && (
