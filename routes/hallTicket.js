@@ -74,7 +74,7 @@ router.get("/special-hallticket/:registerNumber", async (req, res) => {
     const students = await SpecialHallTicket.find({
       registerNo: req.params.registerNumber,
     });
-    console.log(students);
+
     if (!students.length > 0) {
       return res.status(404).send("Student not found");
     }
@@ -111,7 +111,6 @@ router.get("/special-hallticket/:registerNumber", async (req, res) => {
       semesters: semesters,
     };
 
-    console.log(response);
 
     res.status(200).json(response);
   } catch (error) {
